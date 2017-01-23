@@ -74,7 +74,7 @@ public class CSVtoSQL {
 	    		Object element = new Object();
 	    		CSVtoSQL table = new CSVtoSQL();
 	    		//Creation du fichier SQL
-	    		File sqlfile = new File("C:/Users/Aude/Desktop/ZZ3/ProjetZZ3/DataFiles/data.sql");
+	    		File sqlfile = new File("DataFiles/data.sql");
 	    		FileWriter fw = new FileWriter(sqlfile);
 	    		//lecture de la 1ere ligne
 	    		nextLine = reader.readNext();

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Users/Marvin/workspace/bson-3.4.0-beta1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Marvin/workspace/json-lib-2.4-jdk15.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Marvin/workspace/mongodb-driver-3.4.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Marvin/workspace/mongodb-driver-async-3.4.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Marvin/workspace/mongodb-driver-core-3.4.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Marvin/workspace/opencsv-3.8.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Marvin/workspace/neo4j-kernel-2.3.8.jar"/>
+	<classpathentry kind="lib" path="C:/oracle/kv-4.0.9/lib/kvstore.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/MySQL/mysql-connector-java-5.1.40/mysql-connector-java-5.1.40/mysql-connector-java-5.1.40-bin.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Marvin/workspace/neo4j-java-driver-1.0.6.jar" sourcepath="C:/Users/Marvin/.m2/repository/org/neo4j/driver/neo4j-java-driver/1.0.6/neo4j-java-driver-1.0.6-sources.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

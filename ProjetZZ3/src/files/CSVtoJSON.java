@@ -45,7 +45,7 @@ public class CSVtoJSON {
 		    		Iterator<String > it;
 		    		Object element = new Object();
 		    		//Creation fichier Json
-		    		File jsonfile = new File("C:/Users/Aude/Desktop/ZZ3/ProjetZZ3/DataFiles/data.json");
+		    		File jsonfile = new File("DataFiles/data.json");
 		    		FileWriter fw = new FileWriter(jsonfile);
 		    		//Lecture premiere ligne du CSV
 		    		nextLine = reader.readNext();
