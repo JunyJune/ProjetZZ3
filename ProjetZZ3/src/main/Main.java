@@ -45,7 +45,6 @@ public class Main {
 //		mongoDB.ReadAllDatabase();
 //		mongoDB.Disconnect();
 		
-		
 		MySQL mySQL = new MySQL();
 		mySQL.setFilePath(data_filePath_Sql);
 		mySQL.Connect();
