@@ -339,6 +339,7 @@ public class MySQL {
 		System.out.println("Temps total d'execution de la suppression des données :"+ (endTime-startTime) +"ms\n");
 	}
 	
+	
 	public void DeleteProduit(){
 		System.out.println("Suppression dans la base de données MySQL");
 		long startTime = System.currentTimeMillis();

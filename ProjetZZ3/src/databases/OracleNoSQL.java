@@ -171,6 +171,7 @@ public class OracleNoSQL {
 //			System.out.println("Erreur");
 //		}
 
+		
 //		 long endTime = System.currentTimeMillis();
 //		 System.out.println("Temps total d'execution de la lecture :"+ (endTime-startTime) +"ms");
 		
