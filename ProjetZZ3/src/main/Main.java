@@ -7,12 +7,12 @@ import com.mongodb.DBCollection;
 
 import databases.MongoDB;
 import databases.MySQL;
-import databases.Neo4j;
+//import databases.Neo4j;
 import databases.OracleNoSQL;
 import files.CSVtoJSON;
 import files.CSVtoNEO;
 import files.CSVtoSQL;
-
+//
 public class Main {
 
 	public static void main(String[] args) throws IOException {
@@ -45,11 +45,18 @@ public class Main {
 //		mongoDB.ReadAllDatabase();
 //		mongoDB.Disconnect();
 		
-//		MySQL mySQL = new MySQL();
-//		mySQL.setFilePath(data_filePath_Sql);
-//		mySQL.Connect();
-//		mySQL.CreateTables();
-//		mySQL.Disconnect();
+		MySQL mySQL = new MySQL();
+		mySQL.setFilePath(data_filePath_Sql);
+		mySQL.Connect();
+		mySQL.Delete();
+		mySQL.DropTable();
+		mySQL.CreateTables();
+//		L'insertion de 1000 lignes dure environ 3min
+//		Certaines lignes sont rejetées car des fournisseurs différents ont parfois le même ID
+		mySQL.Insert();
+//		Ne fonctionne pas encore, le resultSet vaut toujours 0
+		mySQL.Read();
+		mySQL.Disconnect();
 		
 		/*Neo4j neo4j = new Neo4j();
 		neo4j.setFilePath(data_filePath_Neo);
@@ -57,12 +64,12 @@ public class Main {
 		neo4j.Insert();
 		neo4j.Disconnect();*/
 		
-		OracleNoSQL oracleNoSQL = new OracleNoSQL();
-		oracleNoSQL.setFilePath(data_filePath_Source);
-		oracleNoSQL.Connect();
-		oracleNoSQL.Insert();
-		oracleNoSQL.Read();
-		oracleNoSQL.Disconnect();		
+//		OracleNoSQL oracleNoSQL = new OracleNoSQL();
+//		oracleNoSQL.setFilePath(data_filePath_Source);
+//		oracleNoSQL.Connect();
+//		oracleNoSQL.Insert();
+//		oracleNoSQL.Read();
+//		oracleNoSQL.Disconnect();		
 	}
 
 }
