@@ -48,13 +48,14 @@ public class Main {
 		MySQL mySQL = new MySQL();
 		mySQL.setFilePath(data_filePath_Sql);
 		mySQL.Connect();
-		mySQL.Delete();
-		mySQL.DropTable();
-		mySQL.CreateTables();
-//		L'insertion de 1000 lignes dure environ 3min
-//		Certaines lignes sont rejetées car des fournisseurs différents ont parfois le même ID
-		mySQL.Insert();
-//		Ne fonctionne pas encore, le resultSet vaut toujours 0
+//		mySQL.DeleteClient();
+//		mySQL.DeleteFournisseur();
+		mySQL.DeleteProduit();
+//		mySQL.DeleteCommande();
+//		mySQL.Delete();
+//		mySQL.DropTable();
+//		mySQL.CreateTables();
+//		mySQL.Insert();
 		mySQL.Read();
 		mySQL.Disconnect();
 		
