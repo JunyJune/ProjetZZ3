@@ -83,5 +83,6 @@
 	<classpathentry kind="lib" path="C:/Users/Aude/Desktop/ZZ3/ProjetZZ3/AllJars/sql.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Aude/Desktop/ZZ3/ProjetZZ3/AllJars/t-digest.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Aude/Desktop/ZZ3/ProjetZZ3/AllJars/threetenbp.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Aude/Desktop/ZZ3/ProjetZZ3/AllJars/neo4j-desktop-3.0.8.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
