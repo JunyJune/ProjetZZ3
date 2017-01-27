@@ -26,7 +26,7 @@ public class Main {
 		String data_filePath_Neo = "DataFiles/data.txt";
 		
 		CSVtoJSON jsonConverter = new CSVtoJSON();
-		CSVtoSQL sqlConverter = new CSVtoSQL();
+		//CSVtoSQL sqlConverter = new CSVtoSQL();
 		CSVtoNEO neoConverter = new CSVtoNEO();
 		
 		try {
@@ -37,18 +37,21 @@ public class Main {
 			e.printStackTrace();
 		}
 				
-		MongoDB mongoDB = new MongoDB();
-		mongoDB.setFilePath(data_filePath_Json);
-		mongoDB.InitialisationListes();
-		mongoDB.Connect();
+//		MongoDB mongoDB = new MongoDB();
+//		mongoDB.setFilePath(data_filePath_Json);
+//		mongoDB.InitialisationListes();
+//		mongoDB.Connect();
 //		mongoDB.Insert();
-//		mongoDB.ReadAllDatabase();
-//		mongoDB.Update();
-//		mongoDB.UpdateWithParameter("id_client", "6", "abonnement_client", "false");
-//		mongoDB.DeleteOne("id_client", "10");
-//		mongoDB.DeleteAll();
-		mongoDB.DeleteBetween("id_fournisseur", "2000", "4000");
-		mongoDB.Disconnect();
+//		mongoDB.ReadAll();
+//		mongoDB.UpdateWithParameter("abonnement_client", "false", "abonnement_client", "true");
+//		mongoDB.DeleteBetween("id_fournisseur", "2000", "4000");
+//		
+////		mongoDB.ReadOne("abonnement_client", "true");
+////		mongoDB.Update();
+////		mongoDB.DeleteOne("id_client", "10");
+////		mongoDB.DeleteAll();
+//
+//		mongoDB.Disconnect();
 		
 		
 //		MySQL mySQL = new MySQL();
@@ -68,10 +71,16 @@ public class Main {
 		Neo4j neo4j = new Neo4j();
 		neo4j.setFilePath(data_filePath_Neo);
 		neo4j.Connect();
-		neo4j.Insert();
-		//neo4j.Update();
-		//neo4j.Delete();
-		//neo4j.Read();
+//		neo4j.Insert();
+//		neo4j.ReadAll();
+		neo4j.UpdateWithParameter("Client","abonnement_client","false", "abonnement_client", "true");
+		neo4j.DeleteBetween("Fournisseur", "id_fournisseur", "2000", "4000");
+		
+//		neo4j.Update();
+//		neo4j.Delete();
+//		neo4j.DeleteOne("Client", "id_client", "10");
+//		neo4j.DeleteAll();
+		
 		neo4j.Disconnect();
 
 		
