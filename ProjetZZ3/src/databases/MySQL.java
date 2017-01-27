@@ -205,41 +205,50 @@ public class MySQL {
 		System.out.println("Mise à jour dans la base de données MySQL");
 		long startTime = System.currentTimeMillis();
 		
-		
-		
 		long endTime = System.currentTimeMillis();
 		System.out.println("Temps total d'execution de la mise à jour :"+ (endTime-startTime) +"ms\n");
 	}
 	
 	public void Read(){
-		/***********************************************/
-		/* Ne marche pas, le ResultSet vaut toujours 0 */
-		/***********************************************/
 		
 		System.out.println("Lecture de la base de données MySQL");
-		long startTime = System.currentTimeMillis();
+		long startTime = System.currentTimeMillis();		
 		
 		String query1 = "select count(*) as clientRows from projetzz3.Client;";
+		String query12 = "select count(*) as clientRows from projetzz3.Client where abonnement_client= \"false\" ;";
 		String query2 = "select count(*) as fournisseurRows from Fournisseur;";
+		String query22 = "select count(*) as fournisseurRows from Fournisseur where ville_fournisseur=" + " \"Arneiro\" " + ";";
 		String query23 = "select count(*) as produitRows from Produit;";
 		String query3 = "select count(*) as produitRows from Produit where couleur_produit=" + " \"Mauv\" " + ";";
 		String query4 = "select count(*) as commandeRows from Commande;";
 		
-//		String query1 = "select * from projetZZ3.Client;";
-//		String query2 = "select * from fournisseur;";
-//		String query3 = "select * from produit;";
-//		String query4 = "select * from commande;";
-		
 		try {
+			
+			System.out.println("\n*******************************************************************\n");
+
 			PreparedStatement preparedStatement1 = (PreparedStatement) connection.prepareStatement(query1);
 			ResultSet res1 = preparedStatement1.executeQuery();
 			res1.next();
 			System.out.println("Nombre de ligne dans la table Client : " + res1.getInt("clientRows"));
 			
+			PreparedStatement preparedStatement12 = (PreparedStatement) connection.prepareStatement(query12);
+			ResultSet res12 = preparedStatement12.executeQuery();
+			res12.next();
+			System.out.println("Nombre de clients sans abonnement : " + res12.getInt("clientRows"));
+			
+			System.out.println("\n*******************************************************************\n");
+			
 			PreparedStatement preparedStatement2 = (PreparedStatement) connection.prepareStatement(query2);
 			ResultSet res2 = preparedStatement2.executeQuery();
 			res2.next();
 			System.out.println("Nombre de ligne dans la table Fournisseur : " + res2.getInt("fournisseurRows"));
+
+			PreparedStatement preparedStatement22 = (PreparedStatement) connection.prepareStatement(query22);
+			ResultSet res22 = preparedStatement22.executeQuery();
+			res22.next();
+			System.out.println("Nombre fournisseurs venant d'Arneiro : " + res22.getInt("fournisseurRows"));
+
+			System.out.println("\n*******************************************************************\n");
 
 			PreparedStatement preparedStatement23 = (PreparedStatement) connection.prepareStatement(query23);
 			ResultSet res23 = preparedStatement23.executeQuery();
@@ -251,10 +260,15 @@ public class MySQL {
 			res3.next();
 			System.out.println("Nombre de produit Mauv : " + res3.getInt("produitRows"));
 
+			System.out.println("\n*******************************************************************\n");
+			
 			PreparedStatement preparedStatement4 = (PreparedStatement) connection.prepareStatement(query4);
 			ResultSet res4 = preparedStatement4.executeQuery();
 			res4.next();
 			System.out.println("Nombre de ligne dans la table Commande : " + res4.getInt("commandeRows"));
+			
+			System.out.println("\n*******************************************************************\n");
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -293,20 +307,27 @@ public class MySQL {
 		System.out.println("Suppression dans la base de données MySQL");
 		long startTime = System.currentTimeMillis();
 		
-		String query1 = "delete from client;";
-		String query2 = "delete from fournisseur;";
-		String query3 = "delete from produit;";
-		String query4 = "delete from commande;";
+		
 		try {
+			
+			final String select1 = "select id_client from client where abonnement_client= \"\" ;";
+			PreparedStatement preparedStatement1 = (PreparedStatement) connection.prepareStatement(select1);
+			ResultSet client_id_client=  preparedStatement1.executeQuery();
+			while (client_id_client.next()) {
+				String select2 = "select id_commande from commande where id_client=" + client_id_client.getString(1) + ";";
+				PreparedStatement preparedStatement2 = (PreparedStatement) connection.prepareStatement(select2);
+				ResultSet commande_id_commande = preparedStatement2.executeQuery();
+				while (commande_id_commande.next()) {
+					String delete1 = "delete from commande where id_commande=" + commande_id_commande.getString(1) + ";";
+					PreparedStatement preparedStatement3 = (PreparedStatement) connection.prepareStatement(delete1);
+					preparedStatement3.execute();
 
-			PreparedStatement preparedStatement1 = (PreparedStatement) connection.prepareStatement(query1);
-			preparedStatement1.execute();
-			PreparedStatement preparedStatement2 = (PreparedStatement) connection.prepareStatement(query2);
-			preparedStatement2.execute();
-			PreparedStatement preparedStatement3 = (PreparedStatement) connection.prepareStatement(query3);
-			preparedStatement3.execute();
-			PreparedStatement preparedStatement4 = (PreparedStatement) connection.prepareStatement(query4);
-			preparedStatement4.execute();
+					String delete2 = "delete from client where id_client=" + client_id_client.getString(1) + ";";
+					PreparedStatement preparedStatement4 = (PreparedStatement) connection.prepareStatement(delete2);
+					preparedStatement4.execute();
+				}
+			}
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -317,21 +338,30 @@ public class MySQL {
 	public void DeleteFournisseur(){
 		System.out.println("Suppression dans la base de données MySQL");
 		long startTime = System.currentTimeMillis();
-		
-		String query1 = "delete from client;";
-		String query2 = "delete from fournisseur;";
-		String query3 = "delete from produit;";
-		String query4 = "delete from commande;";
 		try {
+			
+			String select1 = "select id_fournisseur from fournisseur where ville_fournisseur=" + " \"Arneiro\" " + ";";		
+			PreparedStatement preparedStatement1 = (PreparedStatement) connection.prepareStatement(select1);
+			ResultSet fournisseur_id_fournisseur = preparedStatement1.executeQuery();
+			while (fournisseur_id_fournisseur.next()) {
+				String select2 = "select id_produit from produit where id_fournisseur=" + fournisseur_id_fournisseur.getString(1) + ";";
+				PreparedStatement preparedStatement2 = (PreparedStatement) connection.prepareStatement(select2);
+				ResultSet produit_id_produit = preparedStatement2.executeQuery();
+				while (produit_id_produit.next()) {
+					String delete1 = "delete from commande where id_produit=" + produit_id_produit.getString(1) + ";";
+					PreparedStatement preparedStatement3 = (PreparedStatement) connection.prepareStatement(delete1);
+					preparedStatement3.execute();
 
-			PreparedStatement preparedStatement1 = (PreparedStatement) connection.prepareStatement(query1);
-			preparedStatement1.execute();
-			PreparedStatement preparedStatement2 = (PreparedStatement) connection.prepareStatement(query2);
-			preparedStatement2.execute();
-			PreparedStatement preparedStatement3 = (PreparedStatement) connection.prepareStatement(query3);
-			preparedStatement3.execute();
-			PreparedStatement preparedStatement4 = (PreparedStatement) connection.prepareStatement(query4);
-			preparedStatement4.execute();
+					String delete2 = "delete from produit where id_fournisseur=" + fournisseur_id_fournisseur.getString(1) + ";";
+					PreparedStatement preparedStatement4 = (PreparedStatement) connection.prepareStatement(delete2);
+					preparedStatement4.execute();
+				}
+			}
+
+			String delete3 = "delete from fournisseur where ville_fournisseur=" + " \"Arneiro\" " + ";";
+			PreparedStatement preparedStatement5 = (PreparedStatement) connection.prepareStatement(delete3);
+			preparedStatement5.execute();
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

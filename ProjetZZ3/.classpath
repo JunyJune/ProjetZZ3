@@ -57,11 +57,13 @@
 	<classpathentry kind="lib" path="C:/Users/Aude/Desktop/ZZ3/ProjetZZ3/AllJars/neo4j-cypher-compiler-2.2_2.11-2.2.10.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Aude/Desktop/ZZ3/ProjetZZ3/AllJars/neo4j-cypher-compiler-2.3-2.3.8.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Aude/Desktop/ZZ3/ProjetZZ3/AllJars/neo4j-cypher-frontend-2.3-2.3.8.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Aude/Desktop/ZZ3/ProjetZZ3/AllJars/neo4j-desktop-3.0.8.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Aude/Desktop/ZZ3/ProjetZZ3/AllJars/neo4j-function-2.3.8.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Aude/Desktop/ZZ3/ProjetZZ3/AllJars/neo4j-graph-algo-2.3.8.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Aude/Desktop/ZZ3/ProjetZZ3/AllJars/neo4j-graph-matching-2.3.8.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Aude/Desktop/ZZ3/ProjetZZ3/AllJars/neo4j-import-tool-2.3.8.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Aude/Desktop/ZZ3/ProjetZZ3/AllJars/neo4j-io-2.3.8.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Aude/Desktop/ZZ3/ProjetZZ3/AllJars/neo4j-java-driver-1.0.6.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Aude/Desktop/ZZ3/ProjetZZ3/AllJars/neo4j-jmx-2.3.8.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Aude/Desktop/ZZ3/ProjetZZ3/AllJars/neo4j-kernel-2.3.8.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Aude/Desktop/ZZ3/ProjetZZ3/AllJars/neo4j-logging-2.3.8.jar"/>
@@ -75,6 +77,7 @@
 	<classpathentry kind="lib" path="C:/Users/Aude/Desktop/ZZ3/ProjetZZ3/AllJars/opencsv-3.8.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Aude/Desktop/ZZ3/ProjetZZ3/AllJars/parboiled-core-1.1.7.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Aude/Desktop/ZZ3/ProjetZZ3/AllJars/parboiled-scala_2.11-1.1.7.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Aude/Desktop/ZZ3/ProjetZZ3/AllJars/poi-3.15.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Aude/Desktop/ZZ3/ProjetZZ3/AllJars/scala-library-2.11.7.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Aude/Desktop/ZZ3/ProjetZZ3/AllJars/scala-parser-combinators_2.11-1.0.4.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Aude/Desktop/ZZ3/ProjetZZ3/AllJars/scala-reflect-2.11.7.jar"/>
@@ -83,6 +86,5 @@
 	<classpathentry kind="lib" path="C:/Users/Aude/Desktop/ZZ3/ProjetZZ3/AllJars/sql.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Aude/Desktop/ZZ3/ProjetZZ3/AllJars/t-digest.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Aude/Desktop/ZZ3/ProjetZZ3/AllJars/threetenbp.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Aude/Desktop/ZZ3/ProjetZZ3/AllJars/neo4j-desktop-3.0.8.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

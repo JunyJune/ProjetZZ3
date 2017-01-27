@@ -3,6 +3,7 @@ package databases;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -67,6 +68,7 @@ public class OracleNoSQL {
 		
 		KVStoreConfig config = new KVStoreConfig(storeName, hostname + ":" + hostPort);
 		kvstore = KVStoreFactory.getStore(config);
+		System.out.println((kvstore.getStats(true)).toString());
 		
 		 long endTime = System.currentTimeMillis();
 		 System.out.println("Temps total d'execution de la connexion :"+ (endTime-startTime) +"ms\n");
@@ -74,45 +76,108 @@ public class OracleNoSQL {
 	
 	public void Insert(){
 		System.out.println("\nInsertion dans la base de données OracleNoSQL");
-
 		long startTime = System.currentTimeMillis();
-		
-		try {
-			
+
+		try{
 			inputStream = new FileInputStream(filePath);
 			inputStreamReader = new InputStreamReader(inputStream);
 			bufferedReader = new BufferedReader(inputStreamReader);
 			firstLigne = bufferedReader.readLine();
+			String[] keys = firstLigne.split(",");
+			String ligne;
+			String[] values;
 			
-			String stringKeys[] = firstLigne.split(",");
-			Key key;
-			Value value;
-			Key keys[] = new Key[stringKeys.length];
-			String fullLigne;
-			String ligne[] = new String[stringKeys.length];
+			ligne = bufferedReader.readLine();
+			values = ligne.split(",");
 			
-			byte[] line;
+			Key key = Key.createKey(keys[0]);
+			System.out.println(key);
+			Value value = Value.createValue(values[0].getBytes());
+			System.out.println(values[0]);
+			kvstore.putIfAbsent(key, value);					
+
+			Key readKey = Key.createKey(keys[0]);
+			ValueVersion version = kvstore.get(readKey);
+			Value readValue = version.getValue();
+			byte[] tab = readValue.getValue();
+			String res = new String(tab);
+			System.out.println(res);
 			
-			for (int i = 0; i < stringKeys.length; i++) {
-				key = Key.createKey(stringKeys[i]);
-				keys[i] = key;
-			}
+//			while ((ligne = bufferedReader.readLine())!=null) {
+//				values = ligne.split(",");
+//				for (int i = 0; i < keys.length; i++) {
+//					Key key = Key.createKey(keys[i]);
+//					System.out.println(key);
+//					Value value = Value.createValue(values[i].getBytes());
+//					System.out.println(values[i]);
+//					kvstore.putIfAbsent(key, value);					
+//
+//					Key readKey = Key.createKey(keys[0]);
+//					ValueVersion version = kvstore.get(readKey);
+//					Value readValue = version.getValue();
+//					byte[] tab = readValue.getValue();
+//					String res = new String(tab);
+//					System.out.println(res);
+//				}
+//			}
 			
-			while ((fullLigne = bufferedReader.readLine()) != null) {
-				ligne = fullLigne.split(",");
-				for (int i = 0; i < keys.length; i++) {
-					key = keys[i];
-					line = ligne[i].getBytes();
-					value = Value.createValue(line);
-					kvstore.put(key, value);
-				}
-			}
-			
-			bufferedReader.close();
-		
-		} catch (IOException e) {
+//			Key readKey = Key.createKey(keys[0]);
+//			ValueVersion version = kvstore.get(readKey);
+//			Value readValue = version.getValue();
+//			byte[] tab = readValue.getValue();
+//			String res = new String(tab);
+//			System.out.println(res);
+
+		}
+		catch(FileNotFoundException e){
 			e.printStackTrace();
 		}
+		catch(IOException e){
+			e.printStackTrace();
+		}
+		
+		
+//		try {
+//			
+//			inputStream = new FileInputStream(filePath);
+//			inputStreamReader = new InputStreamReader(inputStream);
+//			bufferedReader = new BufferedReader(inputStreamReader);
+//			firstLigne = bufferedReader.readLine();
+//			
+//			String stringKeys[] = firstLigne.split(",");
+//			Key key;
+//			Value value;
+//			Key keys[] = new Key[stringKeys.length];
+//			String fullLigne;
+//			String ligne[] = new String[stringKeys.length];
+//			
+//			byte[] line;
+//			
+//			for (int i = 0; i < stringKeys.length; i++) {
+//				key = Key.createKey(stringKeys[i]);
+//				keys[i] = key;
+//			}
+//			
+//			while ((fullLigne = bufferedReader.readLine()) != null) {
+//				ligne = fullLigne.split(",");
+//				for (int i = 0; i < keys.length; i++) {
+//					key = keys[i];
+//					System.err.println(key);
+//					
+//					line = ligne[i].getBytes();
+//					value = Value.createValue(line);
+//					System.out.println(ligne[i]);
+//					
+//					kvstore.put(key, value);
+//				}
+//			}
+//			
+//			bufferedReader.close();
+//		
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+		
 		 long endTime = System.currentTimeMillis();
 		 System.out.println("Temps total d'execution de l'insertion :"+ (endTime-startTime) +"ms\n");
 	}
@@ -174,31 +239,31 @@ public class OracleNoSQL {
 //		 long endTime = System.currentTimeMillis();
 //		 System.out.println("Temps total d'execution de la lecture :"+ (endTime-startTime) +"ms");
 		
-		ArrayList<String> tab_cles = new ArrayList<String>();
-		tab_cles.clear();
+//		ArrayList<String> tab_cles = new ArrayList<String>();
+//		tab_cles.clear();
+//		
+//		try{
 		
-		try{
-		
-			inputStream = new FileInputStream(filePath);
-			inputStreamReader = new InputStreamReader(inputStream);
-			bufferedReader = new BufferedReader(inputStreamReader);
-			firstLigne = bufferedReader.readLine();
+//			inputStream = new FileInputStream(filePath);
+//			inputStreamReader = new InputStreamReader(inputStream);
+//			bufferedReader = new BufferedReader(inputStreamReader);
+//			firstLigne = bufferedReader.readLine();
 			
-			ligne = firstLigne.split(",");
+//			ligne = firstLigne.split(",");
 			
-			for (int i = 0; i < ligne.length; i++) {
-				tab_cles.add(ligne[i]);
+//			for (int i = 0; i < ligne.length; i++) {
+//				tab_cles.add(ligne[i]);
 //				System.out.println("TAB_CLES : " + tab_cles + "\n");
 //				key = Key.createKey(tab_cles.get(i));
 //				System.out.println("KEY : " + key + "\n");
-			}
+//			}
 			
-				System.out.println(tab_cles);
+//				System.out.println(tab_cles);
 				
 //				Iterator<KeyValueVersion> iterator = kvstore.storeIterator(Direction.UNORDERED, 0, key, null, null);
 //				while(iterator.hasNext()){
 //					key = iterator.next().getKey();
-//					System.out.println("ITERATOR : " + iterator + "\n");
+////					System.out.println("ITERATOR : " + iterator + "\n");
 //					
 //					ValueVersion valueVersCherchee = kvstore.get(key);
 ////					System.out.println("KVSTORE.GET(KEY) : " + kvstore.get(key) + "\n");
@@ -210,7 +275,7 @@ public class OracleNoSQL {
 ////					System.out.println("TAB_BYTES : " + tab_bytes + "\n");
 //					
 //					String val_recup = new String(tab_bytes);
-//					System.out.println("VAL_RECUP : " + val_recup + "\n");
+////					System.out.println("VAL_RECUP : " + val_recup + "\n");
 //					
 //					String ligne = "cle = " + key.toString();					
 //					ligne = ligne + "	valeur = "+ val_recup;
@@ -235,11 +300,11 @@ public class OracleNoSQL {
 //				System.out.println(ligne+"\n");
 //			}
 			
-			bufferedReader.close();
-		
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//			bufferedReader.close();
+//		
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 		
 		long endTime = System.currentTimeMillis();
 	    System.out.println("Temps total d'executiion de la lecture :"+ (endTime-startTime) +"ms\n");
@@ -249,6 +314,7 @@ public class OracleNoSQL {
 		System.out.println("\nSuppresion dans la base de données OracleNoSQL");
 		long startTime = System.currentTimeMillis();
 
+		kvstore.delete(Key.createKey("id_client"));
 
 		long endTime = System.currentTimeMillis();
 		System.out.println("Temps total d'execution de la suppression :"+ (endTime-startTime) +"ms\n");
