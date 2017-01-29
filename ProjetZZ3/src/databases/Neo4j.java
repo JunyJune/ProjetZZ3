@@ -14,14 +14,11 @@ import org.neo4j.driver.v1.AuthTokens;
 import org.neo4j.driver.v1.Config;
 import org.neo4j.driver.v1.Driver;
 import org.neo4j.driver.v1.GraphDatabase;
-import org.neo4j.driver.v1.Record;
 import org.neo4j.driver.v1.Session;
 import org.neo4j.driver.v1.StatementResult;
 
-import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.omg.CORBA.portable.UnknownException;
 
 public class Neo4j {
 	private String filePath;
@@ -56,10 +53,6 @@ public class Neo4j {
 	/******************************************************************************************/		
 	public void Connect(){
 		System.out.println("Connexion à la base de données Neo4j");
-		
-		/*GraphDatabaseFactory generateur = new GraphDatabaseFactory();
-		graphDb = generateur.newEmbeddedDatabase(DB_FILE);
-		registerShutdownHook(graphDb);*/
 		driver = GraphDatabase.driver( "bolt://localhost", AuthTokens.basic("neo4j", "46wjxxpc"), Config.build()
 		        .withEncryptionLevel( Config.EncryptionLevel.REQUIRED )
 		        .withTrustStrategy( Config.TrustStrategy.trustOnFirstUse( new File( "/path/to/neo4j_known_hosts" ) ) )
@@ -75,9 +68,6 @@ public class Neo4j {
 	
 	public void Insert(){
 		System.out.println("Insertion dans la base de données Neo4j");
-
-		//ouverture du fichier destiné à NEO4J
-		System.out.println("Debut de l'insertion");
 		//lecture du fichier texte	
 		try{
 			InputStream ips=new FileInputStream(getFilePath()); 
@@ -103,7 +93,6 @@ public class Neo4j {
 			}
 			long endTime = System.currentTimeMillis();
 			br.close();
-			System.out.println("Insertion effectuée");
 		    long time = endTime-startTime;
 			 System.out.println("Temps total d'execution de l'insertion :"+ (time) +"ms");
 			 writeResult("Insertion ", nb_ligne_insere , this.toString() , time + " ms"   );
@@ -119,11 +108,13 @@ public class Neo4j {
 	
 	public void Update(){
 		System.out.println("Mise à jour dans la base de données Neo4j");
+		
 		long startTime = System.currentTimeMillis();
 		StatementResult result = session.run( "MATCH (a:Client) WHERE a.abonnement_client = 'false' " +
 				"SET a.abonnement_client = 'true' " +
                 "RETURN a.id_client AS abo" );
 		long endTime = System.currentTimeMillis();
+		
 		long time = endTime-startTime;
 		System.out.println("Temps total d'execution de la mise à jour :"+ time +"ms");
 		int nb = 0;
@@ -132,10 +123,8 @@ public class Neo4j {
 		{
 			result.next();
 			nb++;
-			//System.out.println( record.get( "abo" ).asString() );
 			
 		}
-		//result.
 		writeResult("Update ", nb , this.toString() , time + " ms"   );
 		
 	}
@@ -145,9 +134,11 @@ public class Neo4j {
 		String _match = "MATCH (a:"+table+") WHERE a." +param_de_recherche+ "= '" + valeur_recherche +"'";
 		String _set = "SET a."+ param_de_modif + "= '"+ valeur_modif +"' ";
 		String _return ="RETURN a AS abo";
+		
 		long startTime = System.currentTimeMillis();
 		StatementResult result = session.run( _match + _set +_return );
 		long endTime = System.currentTimeMillis();
+		
 		long time = endTime-startTime;
 		System.out.println("Temps total d'execution de la mise à jour :"+ time +"ms");
 		int nb = 0;
@@ -164,13 +155,23 @@ public class Neo4j {
 		
 	}
 	
-	
-	public void ReadOne(String table, String param_de_recherche, String valeur_recherche){
+	//Si bool=true alors il y a une deuxième condition pour la selection
+	public void ReadOne(String table1, String param_de_recherche1,String operator1, String valeur_recherche1, Boolean bool, String table2, String param_de_recherche2,String operator2, String valeur_recherche2){
 		System.out.println("Lecture dans la base de données Neo4j");
+		String _query;
+		if((bool) && (table1 != table2)){
+			_query= "MATCH (a:"+table1+"), (b:"+table2+") WHERE a."+ param_de_recherche1+" "+ operator1+" '"+valeur_recherche1+"' AND b."+ param_de_recherche2 + " "+ operator2 +" '"+ valeur_recherche2+ "' ";
+		}else if((bool) && (table1 == table2)){
+			_query= "MATCH (a:"+table1+") WHERE a."+ param_de_recherche1+" "+ operator1+" '"+valeur_recherche1+"' AND a."+ param_de_recherche2 + " "+ operator2 +" '"+ valeur_recherche2+ "' ";
+		}else{ //bool = false
+			 _query = "MATCH (a:"+table1+") WHERE a."+ param_de_recherche1+" "+ operator1+" '"+valeur_recherche1+"' ";
+		}
+		
 		long startTime = System.currentTimeMillis();
-		StatementResult result =  session.run( "MATCH (a:"+table+") WHERE a."+ param_de_recherche+" = '"+valeur_recherche+"' " + 
+		StatementResult result =  session.run( _query + 
 			"RETURN a" );
 		long endTime = System.currentTimeMillis();
+		
 		long time = endTime-startTime;
 		System.out.println("Temps total d'executiion de la lecture :"+ time +"ms");
 		int nb = 0;
@@ -192,21 +193,15 @@ public class Neo4j {
 		
 		StatementResult result = session.run( "MATCH p=(n)-[r]->(m) " +
 				"RETURN keys(n),keys(r),keys(m) " );
-		//OU//
-		/*StatementResult result = session.run( "MATCH p=(n)-[r]->(m) " +
-				"RETURN * " );*/
+		long endTime = System.currentTimeMillis();
 		
-		/*StatementResult result = session.run( "MATCH (cl:Client)--(c:Commande)--(p:Produit)--(f:Fournisseur) " +
-				"RETURN cl.id_client,c.id_commande,p.id_produit,f.id_fournisseur " );*/
 		int nb = 0;
 		while ( result.hasNext() )
 		{
 			 result.next();
 			 nb++;
-			//System.out.println( record );
-			
 		}
-		long endTime = System.currentTimeMillis();
+		
 		long time = endTime-startTime;
 		System.out.println("Temps total d'executiion de la lecture :"+ time +"ms");
 		writeResult("Lecture", nb , this.toString() , time + " ms"   );
@@ -264,16 +259,15 @@ public class Neo4j {
 		}
 
 		long time = endTime-startTime;
-		System.out.println("Temps total d'executiion de la suppresion :"+ time +"ms");
+		System.out.println("Temps total d'execution de la suppresion :"+ time +"ms");
 		int nb = 0;
 		while ( result.hasNext() )
 		{
 			 result.next();
 			 nb++;
-			//System.out.println( record );
 			
 		}
-		writeResult("Delete", nb , this.toString() , time + " ms"   );
+		writeResult("Suppression", nb , this.toString() , time + " ms"   );
 		
 		
 	}
@@ -286,24 +280,22 @@ public class Neo4j {
 		long startTime = System.currentTimeMillis();
 		session.run( "MATCH (a) " + 
 				"DETACH DELETE a ");
+		long endTime = System.currentTimeMillis();
+		
 		int nb = 0;
 		while ( result.hasNext() )
 		{
 			 result.next();
 			 nb++;
-			//System.out.println( record );
-			
 		}
-		long endTime = System.currentTimeMillis();
+		
 		long time = endTime-startTime;
-		System.out.println("Temps total d'executiion de la lecture :"+ time +"ms");
-		writeResult("Delete", nb , this.toString() , time + " ms"   );
+		System.out.println("Temps total d'execution de la lecture :"+ time +"ms");
+		writeResult("Suppression", nb , this.toString() , time + " ms"   );
 	}
 	
 	public void DeleteBetween(String table, String param_de_recherche, String petit, String grand){
 		System.out.println("Suppresion dans la base de données Neo4j");
-		
-		System.out.println("Mise à jour dans la base de données Neo4j");
 		String _match;
 		StatementResult result = null;
 		long endTime = 0 ;
@@ -360,29 +352,22 @@ public class Neo4j {
 		{
 			 result.next();
 			 nb++;
-			//System.out.println( record );
-			
 		}
-		writeResult("Delete", nb , this.toString() , time + " ms"   );
+		writeResult("Suppression", nb , this.toString() , time + " ms"   );
 		
 		
 	}
 	
 	public void Disconnect(){
-		//graphDb.shutdown();
 		System.out.println("Close connection");
 		driver.close();
 		session.close();
 		
 		try {
-			fileOut = new FileOutputStream("Resultat/ResultatNEO4J.xls");
-		wb.write(fileOut);
-		
-		} catch (FileNotFoundException e) {
-		e.printStackTrace();
+			fileOut.close();
 		} catch (IOException e) {
-		e.printStackTrace();
-		}
+			e.printStackTrace();
+		} 
 	}
 	
 public void writeResult(String typeOp, int nb, String base, String temps){

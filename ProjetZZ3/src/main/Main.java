@@ -36,27 +36,27 @@ public class Main {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-				
+/*********************************MongoDB*************************************/				
 //		MongoDB mongoDB = new MongoDB();
 //		mongoDB.setFilePath(data_filePath_Json);
 //		mongoDB.InitialisationListes();
 //		mongoDB.Connect();
-//		mongoDB.Insert();
-//		mongoDB.ReadAll();
-//		mongoDB.UpdateWithParameter("abonnement_client", "false", "abonnement_client", "true");
-//		mongoDB.DeleteBetween("id_fournisseur", "2000", "4000");
-//		
-////		mongoDB.ReadOne("abonnement_client", "true");
-////		mongoDB.Update();
-////		mongoDB.DeleteOne("id_client", "10");
+////		mongoDB.Insert();
+////		mongoDB.ReadAll();
+////		mongoDB.UpdateWithParameter("abonnement_client", "false", "abonnement_client", "true");
+////		mongoDB.DeleteBetween("id_fournisseur", "2000", "4000");
+////		
+//////		mongoDB.ReadOne("abonnement_client", "true");
+//////		mongoDB.Update();
+//////		mongoDB.DeleteOne("id_client", "10");
 ////		mongoDB.DeleteAll();
-//
+//		mongoDB.ReadOne("abonnement_client", "=", "true", true, "id_client", "<", "3000" );
 //		mongoDB.Disconnect();
 		
-		
-		MySQL mySQL = new MySQL();
-		mySQL.setFilePath(data_filePath_Sql);
-		mySQL.Connect();
+/*********************************MySQL*************************************/			
+//		MySQL mySQL = new MySQL();
+//		mySQL.setFilePath(data_filePath_Sql);
+//		mySQL.Connect();
 		
 //		mySQL.DeleteClient("where iban_client like \"F%\" ");
 //		mySQL.DeleteFournisseur("where email_fournisseur =\"\" and telephone_fournisseur = \"\" ");		
@@ -80,34 +80,35 @@ public class Main {
 		
 //		mySQL.Update("update Client set ville_client=\"UnVilleAssezLonguePourQueJeLaVoisBienDansLaBase\" where abonnement_client=\"true\"; ");
 		
-		mySQL.Disconnect();
+//		mySQL.Disconnect();
 		
+		
+/***********************************NEO4J***************************************/			
 //		Neo4j neo4j = new Neo4j();
 //		neo4j.setFilePath(data_filePath_Neo);
 //		neo4j.Connect();
-////		neo4j.Insert();
-////		neo4j.ReadAll();
+//		neo4j.Insert();
+//		neo4j.ReadAll();
 //		neo4j.UpdateWithParameter("Client","abonnement_client","false", "abonnement_client", "true");
 //		neo4j.DeleteBetween("Fournisseur", "id_fournisseur", "2000", "4000");
-//		
-////		neo4j.Update();
-////		neo4j.Delete();
-////		neo4j.DeleteOne("Client", "id_client", "10");
-////		neo4j.DeleteAll();
-//		
+//		neo4j.ReadOne("Client","abonnement_client", "=", "true", true,"Client", "id_client", "<", "3000");
+//		neo4j.Update();
+//		neo4j.Delete();
+//		neo4j.DeleteOne("Client", "id_client", "10");
+//		neo4j.DeleteAll();
 //		neo4j.Disconnect();
 
-		
+/*********************************OracleNoSQL*************************************/			
 //		OracleNoSQL oracleNoSQL = new OracleNoSQL();
 //		oracleNoSQL.setFilePath(data_filePath_Source);
 //		oracleNoSQL.Connect();
 //		oracleNoSQL.CreateTable();
 //		oracleNoSQL.Insert();
 //		oracleNoSQL.UpdateWithParameter("abonnement_client","false", "abonnement_client", "true");
-//		oracleNoSQL.ReadOne("abonnement_client", "true");
+//		oracleNoSQL.ReadOne("abonnement_client", "=", "true", true, "id_client", "<", "3000" );
 //		oracleNoSQL.DeleteOne("id_client", "10");
 //		oracleNoSQL.DeleteBetween( "id_fournisseur", "2000", "4000");
-//		oracleNoSQL.DeleteAll();
+//		oracleNoSQL.DeleteAll();		
 //		oracleNoSQL.Disconnect();		
 	}
 

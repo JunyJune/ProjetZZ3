@@ -1,31 +1,22 @@
 package databases;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
-import com.google.gwt.dev.util.StringKey;
-
 import jline.internal.InputStreamReader;
-import oracle.kv.Direction;
 import oracle.kv.KVStore;
 import oracle.kv.KVStoreConfig;
 import oracle.kv.KVStoreFactory;
 import oracle.kv.Key;
-import oracle.kv.KeyValueVersion;
 import oracle.kv.StatementResult;
-import oracle.kv.Value;
-import oracle.kv.ValueVersion;
 import oracle.kv.table.PrimaryKey;
 import oracle.kv.table.RecordValue;
 import oracle.kv.table.Row;
@@ -175,7 +166,6 @@ public class OracleNoSQL {
 		StatementResult result = kvstore.executeSync("SELECT * FROM Commandes_ WHERE abonnement_client='false' ");
 		long startTime = System.currentTimeMillis();
 		for( RecordValue record : result ) {
-
 		    // Update a field
 			 row = myTable.createRow(record);			
 		    row.put("abonnement_client", "true" );
@@ -210,19 +200,27 @@ public class OracleNoSQL {
 		writeResult("Update ", nb , this.toString() , time + " ms"   );
 	}
 	
-	
-	public void ReadOne(String param_de_recherche, String valeur_recherche){
+	//Si bool=true alors il y a une deuxième condition pour la selection
+	public void ReadOne(String param_de_recherche1,String operator1, String valeur_recherche1, Boolean bool, String param_de_recherche2,String operator2, String valeur_recherche2){
 		System.out.println("\nLecture dans la base de données OracleNoSQL");
 		int nb =0;
+		String _query;
+		if(bool){
+			_query= ("SELECT id_client FROM Commandes_ WHERE "+ param_de_recherche1+ " "+ operator1 +" '"+ valeur_recherche1+"' AND "+ param_de_recherche2 + " "+ operator2 +" '"+ valeur_recherche2+ "' ");
+		}else{
+			_query = "SELECT id_client FROM Commandes_ WHERE "+ param_de_recherche1+ " "+ operator1 +" '"+ valeur_recherche1+"' ";
+		}
+		
 		long startTime = System.currentTimeMillis();
-		StatementResult result = kvstore.executeSync("SELECT id_client FROM Commandes_ WHERE "+ param_de_recherche+ " = '"+ valeur_recherche+"' ");
+		StatementResult result = kvstore.executeSync(_query);
 		long endTime = System.currentTimeMillis();
+		
 		for( RecordValue record : result ) {
 			nb++;
 		}
 		long time = endTime-startTime;
 		System.out.println("Temps total d'execution de la lecture :"+ time +"ms\n");
-		writeResult("Read ", nb , this.toString() , time + " ms"   );
+		writeResult("Lecture ", nb , this.toString() , time + " ms"   );
 	}
 	
 	public void readAll(){
@@ -261,7 +259,6 @@ public class OracleNoSQL {
 	}
 	
 	public void DeleteAll(){
-		//Je ne sais pas si c'est la meilleur solution.. à voir si y'a d'autres moyens de supprimer dans passer par la lecture
 		System.out.println("\nSuppresion dans la base de données OracleNoSQL");
 		int nb =0;
 		TableAPI tableH = kvstore.getTableAPI();
@@ -304,13 +301,14 @@ public class OracleNoSQL {
 	}
 	
 	public void Disconnect(){
-		System.out.println("\nDéconnexion de la base de données OracleNoSQL");
-		long startTime = System.currentTimeMillis();
-		
+		System.out.println("\nDéconnexion de la base de données OracleNoSQL");	
 		kvstore.close();
 		
-		long endTime = System.currentTimeMillis();
-		System.out.println("Temps total d'execution de la déconnexion :"+ (endTime-startTime) +"ms\n");
+		try {
+			fileOut.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} 
 	}
 	
 public void writeResult(String typeOp, int nb, String base, String temps){
