@@ -9,9 +9,9 @@ import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-//import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -40,8 +40,11 @@ public class MySQL {
 	
 	/******************************************************************************************/
 	/****************************************Fonctions*****************************************/
-	/******************************************************************************************/	
+	/******************************************************************************************/
 
+	/******************************************************************************************/
+	/****************************************Connexion*****************************************/
+	/******************************************************************************************/
 	
 	public void Connect(){
 		System.out.println("Connexion à la base de données MySQL");
@@ -61,11 +64,16 @@ public class MySQL {
 		System.out.println("Temps total d'execution de la connexion :"+ (endTime-startTime) +"ms\n");
 	}
 	
+	/******************************************************************************************/
+	/*************************************Création tables**************************************/
+	/******************************************************************************************/
+	
 	public void CreateTables(){
 		System.out.println("Création de table dans la base de données MySQL");
 		long startTime = System.currentTimeMillis();
 		
 		String query1 = "create table if not exists Client ("
+//				+ "ID_C int primary key auto_increment,"
 				+ "id_client int primary key,"
 				+ "ville_client varchar(255),"
 				+ "prenom_client varchar(255),"
@@ -79,6 +87,7 @@ public class MySQL {
 				;
 		
 		String query2 = "create table if not exists Fournisseur ("
+//				+ "ID_F int primary key auto_increment,"
 				+ "id_fournisseur int primary key,"
 				+ "ville_fournisseur varchar(255),"
 				+ "nom_fournisseur varchar(255),"
@@ -91,8 +100,11 @@ public class MySQL {
 				;
 		
 		String query3 = "create table if not exists Produit ("
+//				+ "ID_P int primary key auto_increment,"
 				+ "id_produit int primary key,"
 				+ "id_fournisseur int,"
+//				+ "ID_F int,"
+				+ "foreign key (id_fournisseur) references Fournisseur(id_fournisseur),"
 				+ "couleur_produit varchar(255),"
 				+ "prix_produit varchar(255),"
 			 	+ "label_produit varchar(255)"
@@ -102,7 +114,11 @@ public class MySQL {
 		String query4 = "create table if not exists Commande ("
 				+ "id_commande int primary key,"
 				+ "id_produit int,"
+//				+ "ID_P int,"
+				+ "foreign key (id_produit) references Produit(id_produit),"
 				+ "id_client int,"
+//				+ "ID_C int,"
+				+ "foreign key (id_client) references Client(id_client),"
 				+ "date_commande varchar(255)"
 				+ ");"
 				;
@@ -122,11 +138,15 @@ public class MySQL {
 		System.out.println("Temps total d'execution de la création des tables :"+ (endTime-startTime) +"ms\n");
 	}
 	
+	/******************************************************************************************/
+	/****************************************Insertion*****************************************/
+	/******************************************************************************************/
+	
 	public void Insert(){
 		System.out.println("Insertion dans la base de données MySQL");
 		long startTime = System.currentTimeMillis();
 
-		int ligneRejetees = 0;
+//		int ligneRejetees = 0;
 		
 		try {
 			InputStream inputStream = new FileInputStream(filePath);
@@ -195,19 +215,34 @@ public class MySQL {
 			e.printStackTrace();
 		}
 		
-		System.out.println("Lignes rejetées : " + ligneRejetees);
+//		System.out.println("Lignes rejetées : " + ligneRejetees);
 		
 		long endTime = System.currentTimeMillis();
 		System.out.println("Temps total d'execution de l'insertion :"+ (endTime-startTime) +"ms\n");
 	}
 	
-	public void Update(){
+	/******************************************************************************************/
+	/***************************************Mise à jour****************************************/
+	/******************************************************************************************/
+	
+	public void Update(String query){
 		System.out.println("Mise à jour dans la base de données MySQL");
 		long startTime = System.currentTimeMillis();
+		
+		try {
+			PreparedStatement preparedStaement = (PreparedStatement) connection.prepareStatement(query);
+			preparedStaement.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
 		long endTime = System.currentTimeMillis();
 		System.out.println("Temps total d'execution de la mise à jour :"+ (endTime-startTime) +"ms\n");
 	}
+	
+	/******************************************************************************************/
+	/*****************************************Lecture******************************************/
+	/******************************************************************************************/
 	
 	public void Read(){
 		
@@ -277,14 +312,77 @@ public class MySQL {
 		System.out.println("Temps total d'execution de la lecture :"+ (endTime-startTime) +"ms\n");
 	}
 	
-	public void Delete(){
-		System.out.println("Suppression dans la base de données MySQL");
+public void ReadSelectEtoile(String whereClause){
+		
+		System.out.println("Lecture de la base de données MySQL");
+		long startTime = System.currentTimeMillis();
+		String query = "Select * from Client " + whereClause + ";";
+		
+		try {
+			
+			System.out.println("\n*******************************************************************\n");
+
+			PreparedStatement preparedStatement1 = (PreparedStatement) connection.prepareStatement(query);
+			ResultSet res = preparedStatement1.executeQuery();
+			int i=0;
+			while (res.next()) {
+				System.out.print(res.getString(1) +	res.getString(2) +	res.getString(3) +	res.getString(4) +	res.getString(5) +	res.getString(6) +	res.getString(7) +	res.getString(8) +	res.getString(9) + "\n");
+				i++;
+			}
+			System.out.println("Nombre de lignes : " + i);
+			
+			System.out.println("\n*******************************************************************\n");
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		long endTime = System.currentTimeMillis();
+		System.out.println("Temps total d'execution de la lecture :"+ (endTime-startTime) +"ms\n");
+	}
+
+public void ReadGenerique(String query, int nbAttributs){
+	
+	System.out.println("Lecture de la base de données MySQL");
+	long startTime = System.currentTimeMillis();
+	
+	try {
+		
+		System.out.println("\n*******************************************************************\n");
+
+		PreparedStatement preparedStatement1 = (PreparedStatement) connection.prepareStatement(query);
+		ResultSet res = preparedStatement1.executeQuery();
+		System.out.println(query);
+		while (res.next()) {
+			for (int i = 1; i <= nbAttributs; i++) {
+				System.err.print(res.getString(i) + "     ");
+			}
+			System.out.print("\n");
+		}
+		
+		System.out.println("\n*******************************************************************\n");
+
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
+	
+	long endTime = System.currentTimeMillis();
+	System.out.println("Temps total d'execution de la lecture :"+ (endTime-startTime) +"ms\n");
+}
+	
+	/******************************************************************************************/
+	/***************************************Suppression****************************************/
+	/******************************************************************************************/
+	
+	public void DeleteAll(){
+		System.out.println("Suppression de toutes les données dans la base de données MySQL");
 		long startTime = System.currentTimeMillis();
 		
 		String query1 = "delete from client;";
 		String query2 = "delete from fournisseur;";
 		String query3 = "delete from produit;";
 		String query4 = "delete from commande;";
+		
 		try {
 
 			PreparedStatement preparedStatement1 = (PreparedStatement) connection.prepareStatement(query1);
@@ -302,15 +400,18 @@ public class MySQL {
 		System.out.println("Temps total d'execution de la suppression des données :"+ (endTime-startTime) +"ms\n");
 	}
 	
+	/******************************************************************************************/
+	/***********************************Suppression CLIENT*************************************/
+	/******************************************************************************************/
 	
-	public void DeleteClient(){
-		System.out.println("Suppression dans la base de données MySQL");
+	public void DeleteClient(String whereClause){
+		System.out.println("Suppression de clients dans la base de données MySQL");
 		long startTime = System.currentTimeMillis();
 		
+		String select1 = "select id_client from client " + whereClause + ";";
 		
 		try {
 			
-			final String select1 = "select id_client from client where abonnement_client= \"\" ;";
 			PreparedStatement preparedStatement1 = (PreparedStatement) connection.prepareStatement(select1);
 			ResultSet client_id_client=  preparedStatement1.executeQuery();
 			while (client_id_client.next()) {
@@ -335,12 +436,17 @@ public class MySQL {
 		System.out.println("Temps total d'execution de la suppression des données :"+ (endTime-startTime) +"ms\n");
 	}
 	
-	public void DeleteFournisseur(){
-		System.out.println("Suppression dans la base de données MySQL");
+	/******************************************************************************************/
+	/********************************Suppression FOURNISSEUR***********************************/
+	/******************************************************************************************/
+	
+	public void DeleteFournisseur(String whereClause){
+		System.out.println("Suppression de fournisseurs dans la base de données MySQL");
 		long startTime = System.currentTimeMillis();
+		String select1 = "select id_fournisseur from fournisseur " + whereClause + ";";
+
 		try {
-			
-			String select1 = "select id_fournisseur from fournisseur where ville_fournisseur=" + " \"Arneiro\" " + ";";		
+
 			PreparedStatement preparedStatement1 = (PreparedStatement) connection.prepareStatement(select1);
 			ResultSet fournisseur_id_fournisseur = preparedStatement1.executeQuery();
 			while (fournisseur_id_fournisseur.next()) {
@@ -351,16 +457,15 @@ public class MySQL {
 					String delete1 = "delete from commande where id_produit=" + produit_id_produit.getString(1) + ";";
 					PreparedStatement preparedStatement3 = (PreparedStatement) connection.prepareStatement(delete1);
 					preparedStatement3.execute();
-
-					String delete2 = "delete from produit where id_fournisseur=" + fournisseur_id_fournisseur.getString(1) + ";";
-					PreparedStatement preparedStatement4 = (PreparedStatement) connection.prepareStatement(delete2);
-					preparedStatement4.execute();
 				}
+				String delete2 = "delete from produit where id_fournisseur=" + fournisseur_id_fournisseur.getString(1) + ";";
+				PreparedStatement preparedStatement4 = (PreparedStatement) connection.prepareStatement(delete2);
+				preparedStatement4.execute();
+				
+				String delete3 = "delete from fournisseur where id_fournisseur=" + fournisseur_id_fournisseur.getString(1) + ";";
+				PreparedStatement preparedStatement5 = (PreparedStatement) connection.prepareStatement(delete3);
+				preparedStatement5.execute();
 			}
-
-			String delete3 = "delete from fournisseur where ville_fournisseur=" + " \"Arneiro\" " + ";";
-			PreparedStatement preparedStatement5 = (PreparedStatement) connection.prepareStatement(delete3);
-			preparedStatement5.execute();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -369,11 +474,15 @@ public class MySQL {
 		System.out.println("Temps total d'execution de la suppression des données :"+ (endTime-startTime) +"ms\n");
 	}
 	
-	public void DeleteProduit(){
-		System.out.println("Suppression dans la base de données MySQL");
+	/******************************************************************************************/
+	/***********************************Suppression PRODUIT************************************/
+	/******************************************************************************************/
+	
+	public void DeleteProduit(String whereClause){
+		System.out.println("Suppression de produits dans la base de données MySQL");
 		long startTime = System.currentTimeMillis();
-		String query1 = "select id_produit from produit where couleur_produit=" + " \"Mauv\" " + ";";
-		String query2 = "delete from produit where couleur_produit=" + " \"Mauv\" " + ";";
+		String query1 = "select id_produit from produit " + whereClause + ";";
+		String query2 = "delete from produit " + whereClause + ";";
 		try {
 
 			PreparedStatement preparedStatement1 = (PreparedStatement) connection.prepareStatement(query1);
@@ -396,10 +505,14 @@ public class MySQL {
 		System.out.println("Temps total d'execution de la suppression des données :"+ (endTime-startTime) +"ms\n");
 	}
 	
-	public void DeleteCommande(){
-		System.out.println("Suppression dans la base de données MySQL");
+	/******************************************************************************************/
+	/***********************************Suppression COMMANDE***********************************/
+	/******************************************************************************************/
+	
+	public void DeleteCommande(String whereClause){
+		System.out.println("Suppression de commandes dans la base de données MySQL");
 		long startTime = System.currentTimeMillis();
-		String query = "delete from commande;";
+		String query = "delete from commande " + whereClause + ";";
 		try {
 			PreparedStatement preparedStatement1 = (PreparedStatement) connection.prepareStatement(query);
 			preparedStatement1.execute();
@@ -410,15 +523,18 @@ public class MySQL {
 		System.out.println("Temps total d'execution de la suppression des données :"+ (endTime-startTime) +"ms\n");
 	}
 	
+	/******************************************************************************************/
+	/************************************Suppression Table*************************************/
+	/******************************************************************************************/	
 	
 	public void DropTable(){
 		System.out.println("Suppression des tables dans la base de données MySQL");
 		long startTime = System.currentTimeMillis();
 		
-		String query1 = "drop table client;";
-		String query2 = "drop table fournisseur;";
-		String query3 = "drop table produit;";
-		String query4 = "drop table commande;";
+		String query1 = "drop table commande;";
+		String query2 = "drop table produit;";
+		String query3 = "drop table fournisseur;";
+		String query4 = "drop table client;";
 		try {
 			PreparedStatement preparedStatement1 = (PreparedStatement) connection.prepareStatement(query1);
 			preparedStatement1.execute();
@@ -434,6 +550,10 @@ public class MySQL {
 		long endTime = System.currentTimeMillis();
 		System.out.println("Temps total d'execution de la suppression des tables :"+ (endTime-startTime) +"ms\n");
 	}
+	
+	/******************************************************************************************/
+	/***************************************Déconnexion****************************************/
+	/******************************************************************************************/
 	
 	public void Disconnect(){
 		System.out.println("Déconnexion");
