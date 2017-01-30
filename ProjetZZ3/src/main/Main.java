@@ -54,34 +54,30 @@ public class Main {
 //		mongoDB.Disconnect();
 		
 /*********************************MySQL*************************************/			
-//		MySQL mySQL = new MySQL();
-//		mySQL.setFilePath(data_filePath_Sql);
-//		mySQL.Connect();
+		MySQL mySQL = new MySQL();
+		mySQL.setFilePath(data_filePath_Sql);
+		mySQL.Connect();
 		
-//		mySQL.DeleteClient("where iban_client like \"F%\" ");
-//		mySQL.DeleteFournisseur("where email_fournisseur =\"\" and telephone_fournisseur = \"\" ");		
-//		mySQL.DeleteProduit("where couleur_produit = \"Mauv\"");
-//		mySQL.DeleteCommande("where date_commande like \"%/3/%\" ");
+		mySQL.CreateTables();	//Gère les clés étrangères
+		mySQL.Insert();
 		
-//		mySQL.DeleteAll();
-//		mySQL.DropTable();
+		mySQL.Read();	//Requête en dur dans le code
+		mySQL.ReadSelectEtoile("where gender_client=\"Male\"");		//Uniquement pour un select*
 		
-//		mySQL.CreateTables();	//Gère les clés étrangères
+		mySQL.ReadGenerique("Select id_produit from commande where date_commande=\"5/3/2013\" or id_client=\"2\";");
+		mySQL.ReadGenerique("Select count(*) from Commande where id_produit in (Select id_produit from Produit where couleur_produit = \"Mauv\");");
 		
-//		mySQL.Insert();
+		mySQL.Update("update Client set ville_client=\"UnVilleAssezLonguePourQueJeLaVoisBienDansLaBase\" where abonnement_client=\"true\"; ");
 		
-//		mySQL.Read();	//Requête en dur dans le code
-//		mySQL.ReadSelectEtoile("where gender_client=\"Male\"");		//Uniquement pour un select*
+		mySQL.DeleteClient("where iban_client like \"F%\" ");
+		mySQL.DeleteFournisseur("where email_fournisseur =\"\" and telephone_fournisseur = \"\" ");		
+		mySQL.DeleteProduit("where couleur_produit = \"Mauv\"");
+		mySQL.DeleteCommande("where date_commande like \"%/3/%\" ");
 		
-		//Affichage étrange mais je pense que c'est parce que le code est plus rapide que les syso, parfois le syso se fait au bon endroit, parfois après, avant ou un peu tout à la fois
-		//Il faut préciser dans le deuxième attribut le nombre de colonnes que l'on veut obtenir (c'est pour faire une boucle)
-//		mySQL.ReadGenerique("Select id_produit from commande where date_commande=\"5/3/2013\" or id_client=\"2\";", 1);
-//		mySQL.ReadGenerique("Select count(*) from Commande where id_produit in (Select id_produit from Produit where couleur_produit = \"Mauv\");", 1);
+		mySQL.DropTable();
 		
-//		mySQL.Update("update Client set ville_client=\"UnVilleAssezLonguePourQueJeLaVoisBienDansLaBase\" where abonnement_client=\"true\"; ");
-		
-//		mySQL.Disconnect();
-		
+		mySQL.Disconnect();
+
 		
 /***********************************NEO4J***************************************/			
 //		Neo4j neo4j = new Neo4j();
