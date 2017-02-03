@@ -30,19 +30,19 @@ public class Main {
 //		CSVtoNEO neoConverter = new CSVtoNEO();
 		
 		try {
-			jsonConverter.convertCSVtoJSON(data_filePath_Source);
+//			jsonConverter.convertCSVtoJSON(data_filePath_Source);
 			sqlConverter.execute(data_filePath_Source);
 			//neoConverter.execute(data_filePath_Source);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 /*********************************MongoDB*************************************/				
-		MongoDB mongoDB = new MongoDB();
-		mongoDB.setFilePath(data_filePath_Json);
-		mongoDB.InitialisationListes();
-		mongoDB.Connect();
-		mongoDB.Insert();
-		mongoDB.ReadAll();
+//		MongoDB mongoDB = new MongoDB();
+//		mongoDB.setFilePath(data_filePath_Json);
+//		mongoDB.InitialisationListes();
+//		mongoDB.Connect();
+//		mongoDB.Insert();
+//		mongoDB.ReadAll();
 //		mongoDB.UpdateWithParameter("abonnement_client", "false", "abonnement_client", "true");
 //		mongoDB.DeleteBetween("id_fournisseur", "2000", "4000");
 //		
@@ -51,16 +51,17 @@ public class Main {
 //		mongoDB.DeleteOne("id_client", "10");
 //		mongoDB.DeleteAll();
 //		mongoDB.ReadOne("abonnement_client", "=", "true", true, "id_client", "<", "3000" );
-		mongoDB.Disconnect();
+//		mongoDB.Disconnect();
 		
 /*********************************MySQL*************************************/			
 		MySQL mySQL = new MySQL();
 		mySQL.setFilePath(data_filePath_Sql);
 		mySQL.Connect();
 		
-		mySQL.CreateTables();	//Gère les clés étrangères
-		mySQL.Insert();
+//		mySQL.CreateTables();	//Gère les clés étrangères
+//		mySQL.Insert();
 		
+		mySQL.ReadAll();
 //		mySQL.Read();	//Requête en dur dans le code
 //		mySQL.ReadSelectEtoile("where abonnement_client=\"false\"");		//Uniquement pour un select*
 //		

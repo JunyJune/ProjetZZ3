@@ -26,7 +26,7 @@ public class MySQL {
 
 	private String url = "jdbc:mysql://localhost/projetzz3?useSSL=false";
 	private String login = "root";
-	private String password = "muffintm";
+	private String password = "isima";
 	private Connection connection = null;
 	
 	int nbRow;
@@ -246,6 +246,51 @@ public class MySQL {
 	/******************************************************************************************/
 	/*****************************************Lecture******************************************/
 	/******************************************************************************************/
+	
+	public void ReadAll(){
+		System.out.println("Lecture de la base de données MySQL\n");
+		int lignesLues = 0;
+
+		long startTime = System.currentTimeMillis();		
+		
+		String selectCommande = "select count(*) as commandeRows from projetzz3.Commande;";
+		String selectProduit = "select count(*) as produitRows from projetzz3.Produit;";
+		String selectFournisseur = "select count(*) as FournisseurRows from projetzz3.Fournisseur;";
+		String selectClient = "select count(*) as clientRows from projetzz3.Client;";
+
+		try {
+			
+
+			PreparedStatement preparedStatement1 = (PreparedStatement) connection.prepareStatement(selectCommande);
+			ResultSet res1 = preparedStatement1.executeQuery();
+			res1.next();
+			lignesLues += res1.getInt("commandeRows");
+			
+			PreparedStatement preparedStatement2 = (PreparedStatement) connection.prepareStatement(selectProduit);
+			ResultSet res2 = preparedStatement2.executeQuery();
+			res2.next();
+			lignesLues += res2.getInt("produitRows");
+			
+			PreparedStatement preparedStatement3 = (PreparedStatement) connection.prepareStatement(selectFournisseur);
+			ResultSet res3= preparedStatement3.executeQuery();
+			res3.next();
+			lignesLues += res3.getInt("FournisseurRows");
+			
+			PreparedStatement preparedStatement4 = (PreparedStatement) connection.prepareStatement(selectClient);
+			ResultSet res4 = preparedStatement4.executeQuery();
+			res4.next();
+			lignesLues += res4.getInt("clientRows");
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		//Calcul du temps de traitement ici
+		long time = System.currentTimeMillis() - startTime;
+		
+		writeResult("Lecture", lignesLues , this.toString() , time + " ms"   );
+
+	}
 	
 	public void Read(){
 		
