@@ -26,7 +26,7 @@ public class MySQL {
 
 	private String url = "jdbc:mysql://localhost/projetzz3?useSSL=false";
 	private String login = "root";
-	private String password = "muffintm";
+	private String password = "isima";
 	private Connection connection = null;
 	
 	int nbRow;
@@ -495,12 +495,52 @@ public void ReadSelectEtoile(String whereClause){
 	
 	public void DeleteAll(){
 		System.out.println("Suppression de toutes les données dans la base de données MySQL");
+		
+		//Calcul du nombre de lignes supprimées
+		int lignesSupp = 0;	
+		String selectClient = "select * from Client;";
+		String selectFournisseur = "select * from Fournisseur;";
+		String selectProduit = "select * from Produit;";
+		String selectCommande = "select * from Commande;";
+		try {
+			PreparedStatement countClient = (PreparedStatement) connection.prepareStatement(selectClient);
+			ResultSet result1 = countClient.executeQuery();
+//			result1.next();
+			if(result1.next()){
+				lignesSupp += result1.getInt(1);
+			}
+			
+			PreparedStatement countFournisseur = (PreparedStatement) connection.prepareStatement(selectFournisseur);
+			ResultSet result2 = countFournisseur.executeQuery();
+//			result2.next();
+			if (result2.next()) {
+				lignesSupp += result2.getInt(1);
+			}
+			
+			PreparedStatement countProduit = (PreparedStatement) connection.prepareStatement(selectProduit);
+			ResultSet result3 = countProduit.executeQuery();
+//			result3.next();
+			if (result3.next()) {
+				lignesSupp += result3.getInt(1);
+			}
+			
+			PreparedStatement countCommande = (PreparedStatement) connection.prepareStatement(selectCommande);
+			ResultSet result4 = countCommande.executeQuery();
+//			result4.next();
+			if (result4.next()) {
+				lignesSupp += result4.getInt(1);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+					
 		long startTime = System.currentTimeMillis();
 		
-		String query1 = "delete from client;";
-		String query2 = "delete from fournisseur;";
-		String query3 = "delete from produit;";
-		String query4 = "delete from commande;";
+		String query1 = "delete from commande;";
+		String query2 = "delete from produit;";
+		String query3 = "delete from fournisseur;";
+		String query4 = "delete from client;";
 		
 		try {
 			PreparedStatement preparedStatement1 = (PreparedStatement) connection.prepareStatement(query1);
@@ -517,36 +557,6 @@ public void ReadSelectEtoile(String whereClause){
 		
 		//Calcul du temps de traitement ici
 		long time = System.currentTimeMillis()-startTime;
-		
-		//Calcul du nombre de lignes supprimées
-		int lignesSupp = 0;	
-		String selectClient = "select * from Client;";
-		String selectFournisseur = "select * from Fournisseur;";
-		String selectProduit = "select * from Produit;";
-		String selectCommande = "select * from Commande;";
-		try {
-			PreparedStatement countClient = (PreparedStatement) connection.prepareStatement(selectClient);
-			ResultSet result1 = countClient.executeQuery();
-			result1.next();
-			lignesSupp += result1.getInt(1);
-			
-			PreparedStatement countFournisseur = (PreparedStatement) connection.prepareStatement(selectFournisseur);
-			ResultSet result2 = countFournisseur.executeQuery();
-			result2.next();
-			lignesSupp += result2.getInt(1);
-			
-			PreparedStatement countProduit = (PreparedStatement) connection.prepareStatement(selectProduit);
-			ResultSet result3 = countProduit.executeQuery();
-			result3.next();
-			lignesSupp += result3.getInt(1);
-			
-			PreparedStatement countCommande = (PreparedStatement) connection.prepareStatement(selectCommande);
-			ResultSet result4 = countCommande.executeQuery();
-			result4.next();
-			lignesSupp += result4.getInt(1);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
 		
 		writeResult("Delete", lignesSupp , this.toString() , time + " ms"   );
 	}
