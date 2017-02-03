@@ -30,38 +30,40 @@ public class Main {
 //		CSVtoNEO neoConverter = new CSVtoNEO();
 		
 		try {
-//			jsonConverter.convertCSVtoJSON(data_filePath_Source);
+			jsonConverter.convertCSVtoJSON(data_filePath_Source);
 			sqlConverter.execute(data_filePath_Source);
 			//neoConverter.execute(data_filePath_Source);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 /*********************************MongoDB*************************************/				
-//		MongoDB mongoDB = new MongoDB();
-//		mongoDB.setFilePath(data_filePath_Json);
-//		mongoDB.InitialisationListes();
-//		mongoDB.Connect();
-//		mongoDB.Insert();
-//		mongoDB.ReadAll();
-//		mongoDB.UpdateWithParameter("abonnement_client", "false", "abonnement_client", "true");
-//		mongoDB.DeleteBetween("id_fournisseur", "2000", "4000");
-//		
-//		mongoDB.ReadOne("abonnement_client", "true");
+		MongoDB mongoDB = new MongoDB();
+		mongoDB.setFilePath(data_filePath_Json);
+		mongoDB.InitialisationListes();
+		mongoDB.Connect();
+		mongoDB.Insert();
+		mongoDB.ReadAll();
+		mongoDB.UpdateWithParameter("abonnement_client", "false", "abonnement_client", "true");
+		mongoDB.DeleteBetween("id_fournisseur", "2000", "4000");
+		mongoDB.ReadOne("abonnement_client", "=", "true", true, "id_client", "<", "3000" );
 //		mongoDB.Update();
 //		mongoDB.DeleteOne("id_client", "10");
-//		mongoDB.DeleteAll();
-//		mongoDB.ReadOne("abonnement_client", "=", "true", true, "id_client", "<", "3000" );
-//		mongoDB.Disconnect();
+		mongoDB.DeleteAll();
+		mongoDB.Disconnect();
 		
 /*********************************MySQL*************************************/			
 		MySQL mySQL = new MySQL();
 		mySQL.setFilePath(data_filePath_Sql);
 		mySQL.Connect();
 		
-//		mySQL.CreateTables();	//Gère les clés étrangères
-//		mySQL.Insert();
+		mySQL.CreateTables();	//Gère les clés étrangères
+		mySQL.Insert();
 		
 		mySQL.ReadAll();
+		mySQL.Update("update Client set abonnement_client=\"true\" where abonnement_client=\"false\"; ");
+		mySQL.DeleteFournisseur("where id_fournisseur >\"2000\" and id_fournisseur < \"4000\" ");	
+		mySQL.ReadGenerique("Select count(*) from Client where abonnement_client=\"true\" AND id_client<\"3000\";");
+		
 //		mySQL.Read();	//Requête en dur dans le code
 //		mySQL.ReadSelectEtoile("where abonnement_client=\"false\"");		//Uniquement pour un select*
 //		
@@ -76,7 +78,7 @@ public class Main {
 //		mySQL.DeleteCommande("where date_commande like \"%/3/%\" ");
 //		
 //		mySQL.DropTable();
-		
+		mySQL.DeleteAll();
 		mySQL.Disconnect();
 
 		

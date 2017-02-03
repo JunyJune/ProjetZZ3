@@ -26,7 +26,7 @@ public class MySQL {
 
 	private String url = "jdbc:mysql://localhost/projetzz3?useSSL=false";
 	private String login = "root";
-	private String password = "isima";
+	private String password = "muffintm";
 	private Connection connection = null;
 	
 	int nbRow;
