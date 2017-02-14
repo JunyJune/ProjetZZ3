@@ -138,7 +138,8 @@ public class OracleNoSQL {
 			while((fullLigne = bufferedReader.readLine()) != null) {
 				ligne = fullLigne.split(",");
 				row = myTable.createRow();
-				for (int i = 0; i < keys.length; i++) {
+				//Ici on faisait un tour de trop qui ntraînait un OutOfBound
+				for (int i = 0; i < keys.length-1; i++) {
 					line = ligne[i];
 					row.put(stringKeys[i],  line);
 				}

@@ -52,8 +52,9 @@ public class Main {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		String data_filePath_Json = "DataFiles/data_"+i+".json";
+//		String data_filePath_Json = "DataFiles/data_"+i+".json";
 		i++;
+		String data_filePath_Json = "DataFiles/data.json";
 		mongoDB.setFilePath(data_filePath_Json);
 		mongoDB.Insert(); //1 000
 		mongoDB.ReadOne("abonnement_client", "=", "false", false, null, null, null);
@@ -65,7 +66,8 @@ public class Main {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		data_filePath_Json = "DataFiles/data_"+i+".json";
+//		data_filePath_Json = "DataFiles/data_"+i+".json";
+		data_filePath_Json = "DataFiles/data.json";
 		i++;
 		mongoDB.setFilePath(data_filePath_Json);
 		mongoDB.Insert(); //10 000
@@ -78,7 +80,8 @@ public class Main {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		data_filePath_Json = "DataFiles/data_"+i+".json";
+//		data_filePath_Json = "DataFiles/data_"+i+".json";
+		data_filePath_Json = "DataFiles/data.json";
 		i++;
 		mongoDB.setFilePath(data_filePath_Json);
 		mongoDB.Insert(); //50 000
@@ -90,7 +93,8 @@ public class Main {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		data_filePath_Json = "DataFiles/data_"+i+".json";
+//		data_filePath_Json = "DataFiles/data_"+i+".json";
+		data_filePath_Json = "DataFiles/data.json";
 		i++;
 		mongoDB.setFilePath(data_filePath_Json);
 		mongoDB.Insert(); //20 000
@@ -106,7 +110,8 @@ public class Main {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		data_filePath_Json = "DataFiles/data_"+i+".json";
+//		data_filePath_Json = "DataFiles/data_"+i+".json";
+		data_filePath_Json = "DataFiles/data.json";
 		i++;
 		mongoDB.setFilePath(data_filePath_Json);
 		mongoDB.Insert(); //1 000
@@ -117,7 +122,8 @@ public class Main {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		data_filePath_Json = "DataFiles/data_"+i+".json";
+//		data_filePath_Json = "DataFiles/data_"+i+".json";
+		data_filePath_Json = "DataFiles/data.json";
 		i++;
 		mongoDB.setFilePath(data_filePath_Json);
 		mongoDB.Insert(); //30 000
@@ -130,7 +136,8 @@ public class Main {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		data_filePath_Json = "DataFiles/data_"+i+".json";
+//		data_filePath_Json = "DataFiles/data_"+i+".json";
+		data_filePath_Json = "DataFiles/data.json";
 		i++;
 		mongoDB.setFilePath(data_filePath_Json);
 		mongoDB.Insert(); //1 000
@@ -142,7 +149,8 @@ public class Main {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		data_filePath_Json = "DataFiles/data_"+i+".json";
+//		data_filePath_Json = "DataFiles/data_"+i+".json";
+		data_filePath_Json = "DataFiles/data.json";
 		i++;
 		mongoDB.setFilePath(data_filePath_Json);
 		mongoDB.Insert(); //30 000
@@ -156,7 +164,8 @@ public class Main {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		data_filePath_Json = "DataFiles/data_"+i+".json";
+//		data_filePath_Json = "DataFiles/data_"+i+".json";
+		data_filePath_Json = "DataFiles/data.json";
 		i++;
 		mongoDB.setFilePath(data_filePath_Json);
 		mongoDB.Insert(); //20 000
@@ -167,7 +176,8 @@ public class Main {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		data_filePath_Json = "DataFiles/data_"+i+".json";
+//		data_filePath_Json = "DataFiles/data_"+i+".json";
+		data_filePath_Json = "DataFiles/data.json";
 		i++;
 		mongoDB.setFilePath(data_filePath_Json);
 		mongoDB.Insert(); //1 000
@@ -180,7 +190,8 @@ public class Main {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		data_filePath_Json = "DataFiles/data_"+i+".json";
+//		data_filePath_Json = "DataFiles/data_"+i+".json";
+		data_filePath_Json = "DataFiles/data.json";
 		i++;
 		mongoDB.setFilePath(data_filePath_Json);
 		mongoDB.Insert(); //30 000
@@ -193,7 +204,8 @@ public class Main {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		data_filePath_Json = "DataFiles/data_"+i+".json";
+//		data_filePath_Json = "DataFiles/data_"+i+".json";
+		data_filePath_Json = "DataFiles/data.json";
 		i++;
 		mongoDB.setFilePath(data_filePath_Json);
 		mongoDB.Insert(); //50 000
@@ -204,7 +216,8 @@ public class Main {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		data_filePath_Json = "DataFiles/data_"+i+".json";
+//		data_filePath_Json = "DataFiles/data_"+i+".json";
+		data_filePath_Json = "DataFiles/data.json";
 		i++;
 		mongoDB.setFilePath(data_filePath_Json);
 		mongoDB.Insert(); //20 000
@@ -217,22 +230,59 @@ public class Main {
 /*
 		int i = 1;
 		MySQL mySQL = new MySQL();
-		mySQL.setFilePath("DataFiles/data_"+i+".sql");
+//		mySQL.setFilePath("DataFiles/data_"+i+".sql");
+		mySQL.setFilePath("DataFiles/data.sql");
 		mySQL.Connect();
 		mySQL.CreateTables();	//Gère les clés étrangères
-		
+		CSVtoSQL sqlConverter = new CSVtoSQL();
+		String data_filePath_Source = "DataFiles/data_"+i+".csv";
+		try {
+			sqlConverter.execute(data_filePath_Source);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		String data_filePath_Sql = "DataFiles/data.sql";
+		mySQL.setFilePath(data_filePath_Sql);
+		i++;
 		//1 000
 		mySQL.Insert();
 		mySQL.ReadGenerique("Select id_commande from Commande where id_client in (Select id_client from Client where abonnement_client=\"true\");");
 		mySQL.ReadGenerique("Select id_commande from Commande where id_client in (Select id_client from Client where abonnement_client=\"true\") and id_produit in (Select id_produit from Produit where couleur_produit = \"Mauv\");");
 		//10 000
+		data_filePath_Source = "DataFiles/data_"+i+".csv";
+		try {
+			sqlConverter.execute(data_filePath_Source);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		data_filePath_Sql = "DataFiles/data.sql";
+		mySQL.setFilePath(data_filePath_Sql);
+		i++;
 		mySQL.Insert();
 		mySQL.Update("update Fournisseur set devise_fournisseur=\"EUR\" where Telephone_fournisseur like \"+33%\"; ");
 		mySQL.DeleteClient("where gender_client = \"Male\" ");
 		//50 000
+		data_filePath_Source = "DataFiles/data_"+i+".csv";
+		try {
+			sqlConverter.execute(data_filePath_Source);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		data_filePath_Sql = "DataFiles/data.sql";
+		mySQL.setFilePath(data_filePath_Sql);
+		i++;
 		mySQL.Insert();
 		mySQL.ReadAll();
 		//20 000
+		data_filePath_Source = "DataFiles/data_"+i+".csv";
+		try {
+			sqlConverter.execute(data_filePath_Source);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		data_filePath_Sql = "DataFiles/data.sql";
+		mySQL.setFilePath(data_filePath_Sql);
+		i++;
 		mySQL.Insert();
 		mySQL.Update("update Client set abonnement_client=\"true\" where abonnement_client=\"false\"; ");
 		mySQL.ReadGenerique("Select id_commande from commande where id_produit in (Select id_produit from Produit where id_fournisseur in (Select id_fournisseur from Fournisseur where devise_fournisseur = \"DOLL\")) and id_produit in (Select id_produit from Produit where prix_produit > 4000);");
@@ -240,32 +290,113 @@ public class Main {
 		mySQL.DeleteFournisseur("where id_fournisseur > 2000 and id_fournisseur < 4000");		
 		mySQL.ReadAll();		
 		//1 000
+		data_filePath_Source = "DataFiles/data_"+i+".csv";
+		try {
+			sqlConverter.execute(data_filePath_Source);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		data_filePath_Sql = "DataFiles/data.sql";
+		mySQL.setFilePath(data_filePath_Sql);
+		i++;
 		mySQL.Insert();
 		//30 000
+		data_filePath_Source = "DataFiles/data_"+i+".csv";
+		try {
+			sqlConverter.execute(data_filePath_Source);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		data_filePath_Sql = "DataFiles/data.sql";
+		mySQL.setFilePath(data_filePath_Sql);
+		i++;
 		mySQL.Insert();
 		mySQL.ReadAll();
 		mySQL.Update("update Client set ville_client=\"Aubiere\" where ville_client=\"Cahors\"; ");
 		//1 000
+		data_filePath_Source = "DataFiles/data_"+i+".csv";
+		try {
+			sqlConverter.execute(data_filePath_Source);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		data_filePath_Sql = "DataFiles/data.sql";
+		mySQL.setFilePath(data_filePath_Sql);
+		i++;
 		mySQL.Insert();
 		mySQL.ReadGenerique("Select id_commande from commande where id_produit in (Select id_produit from Produit where id_fournisseur = 10);");
 		//30 000
+		data_filePath_Source = "DataFiles/data_"+i+".csv";
+		try {
+			sqlConverter.execute(data_filePath_Source);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		data_filePath_Sql = "DataFiles/data.sql";
+		mySQL.setFilePath(data_filePath_Sql);
+		i++;
 		mySQL.Insert();
 		mySQL.ReadAll();
 		mySQL.DeleteFournisseur("where id_fournisseur > 2000 and id_fournisseur < 4000");		
 		mySQL.Update("update Produit set couleur_produit=\"Pink\" where couleur_produit= \"Yellow\";");
 		//20 000
+		data_filePath_Source = "DataFiles/data_"+i+".csv";
+		try {
+			sqlConverter.execute(data_filePath_Source);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		data_filePath_Sql = "DataFiles/data.sql";
+		mySQL.setFilePath(data_filePath_Sql);
+		i++;
 		mySQL.Insert();
 		//1 000
+		data_filePath_Source = "DataFiles/data_"+i+".csv";
+		try {
+			sqlConverter.execute(data_filePath_Source);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		data_filePath_Sql = "DataFiles/data.sql";
+		mySQL.setFilePath(data_filePath_Sql);
+		i++;
 		mySQL.Insert();
 		mySQL.ReadGenerique("Select id_commande from commande where id_client in (Select id_client from Client where abonnement_client = \"true\") or id_produit in (Select id_produit from Produit where prix_produit > 4000);");
 		mySQL.ReadAll();
 		//30 000
+		data_filePath_Source = "DataFiles/data_"+i+".csv";
+		try {
+			sqlConverter.execute(data_filePath_Source);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		data_filePath_Sql = "DataFiles/data.sql";
+		mySQL.setFilePath(data_filePath_Sql);
+		i++;
 		mySQL.Insert();
 		mySQL.ReadGenerique("Select id_commande from commande where id_client in (Select id_client from Client where gender_client = \"female\");");
 		mySQL.DeleteProduit("where prix_produit > 300 and prix_produit < 1000");		
 		//50 000
+		data_filePath_Source = "DataFiles/data_"+i+".csv";
+		try {
+			sqlConverter.execute(data_filePath_Source);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		data_filePath_Sql = "DataFiles/data.sql";
+		mySQL.setFilePath(data_filePath_Sql);
+		i++;
 		mySQL.Insert();
 		//20 000
+		data_filePath_Source = "DataFiles/data_"+i+".csv";
+		try {
+			sqlConverter.execute(data_filePath_Source);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		data_filePath_Sql = "DataFiles/data.sql";
+		mySQL.setFilePath(data_filePath_Sql);
+		i++;
 		mySQL.Insert();
 		mySQL.ReadAll();
 		mySQL.DeleteAll();
@@ -284,7 +415,8 @@ public class Main {
 	} catch (Exception e) {
 		e.printStackTrace();
 	}
-	String data_filePath_Neo = "DataFiles/data_"+i+".txt";
+//	String data_filePath_Neo = "DataFiles/data_"+i+".txt";
+	String data_filePath_Neo = "DataFiles/data.txt";
 	neo4j.setFilePath(data_filePath_Neo);
 	i++;
 	neo4j.Insert(); //1000
@@ -297,7 +429,8 @@ public class Main {
 	} catch (Exception e) {
 		e.printStackTrace();
 	}
-	data_filePath_Neo = "DataFiles/data_"+i+".txt";
+//	data_filePath_Neo = "DataFiles/data_"+i+".txt";
+//	data_filePath_Neo = "DataFiles/data.txt";
 	neo4j.setFilePath(data_filePath_Neo);
 	i++;
 	neo4j.Insert(); //10000
@@ -310,7 +443,8 @@ public class Main {
 	} catch (Exception e) {
 		e.printStackTrace();
 	}
-	data_filePath_Neo = "DataFiles/data_"+i+".txt";
+//	data_filePath_Neo = "DataFiles/data_"+i+".txt";
+//	data_filePath_Neo = "DataFiles/data.txt";
 	neo4j.setFilePath(data_filePath_Neo);
 	i++;
 	neo4j.Insert(); //50000
@@ -322,7 +456,8 @@ public class Main {
 	} catch (Exception e) {
 		e.printStackTrace();
 	}
-	data_filePath_Neo = "DataFiles/data_"+i+".txt";
+//	data_filePath_Neo = "DataFiles/data_"+i+".txt";
+//	data_filePath_Neo = "DataFiles/data.txt";
 	neo4j.setFilePath(data_filePath_Neo);
 	i++;
 	neo4j.Insert(); //20000
@@ -338,7 +473,8 @@ public class Main {
 	} catch (Exception e) {
 		e.printStackTrace();
 	}
-	data_filePath_Neo = "DataFiles/data_"+i+".txt";
+//	data_filePath_Neo = "DataFiles/data_"+i+".txt";
+//	data_filePath_Neo = "DataFiles/data.txt";
 	neo4j.setFilePath(data_filePath_Neo);
 	i++;
 	neo4j.Insert(); //1000
@@ -349,7 +485,8 @@ public class Main {
 	} catch (Exception e) {
 		e.printStackTrace();
 	}
-	data_filePath_Neo = "DataFiles/data_"+i+".txt";
+//	data_filePath_Neo = "DataFiles/data_"+i+".txt";
+//	data_filePath_Neo = "DataFiles/data.txt";
 	neo4j.setFilePath(data_filePath_Neo);
 	i++;
 	neo4j.Insert(); //30000
@@ -362,7 +499,8 @@ public class Main {
 	} catch (Exception e) {
 		e.printStackTrace();
 	}
-	data_filePath_Neo = "DataFiles/data_"+i+".txt";
+//	data_filePath_Neo = "DataFiles/data_"+i+".txt";
+//	data_filePath_Neo = "DataFiles/data.txt";
 	neo4j.setFilePath(data_filePath_Neo);
 	i++;
 	neo4j.Insert(); //1000
@@ -374,7 +512,8 @@ public class Main {
 	} catch (Exception e) {
 		e.printStackTrace();
 	}
-	data_filePath_Neo = "DataFiles/data_"+i+".txt";
+//	data_filePath_Neo = "DataFiles/data_"+i+".txt";
+//	data_filePath_Neo = "DataFiles/data.txt";
 	neo4j.setFilePath(data_filePath_Neo);
 	i++;
 	neo4j.Insert(); //30000
@@ -388,7 +527,8 @@ public class Main {
 	} catch (Exception e) {
 		e.printStackTrace();
 	}
-	data_filePath_Neo = "DataFiles/data_"+i+".txt";
+//	data_filePath_Neo = "DataFiles/data_"+i+".txt";
+//	data_filePath_Neo = "DataFiles/data.txt";
 	neo4j.setFilePath(data_filePath_Neo);
 	i++;
 	neo4j.Insert(); //20000
@@ -399,7 +539,8 @@ public class Main {
 	} catch (Exception e) {
 		e.printStackTrace();
 	}
-	data_filePath_Neo = "DataFiles/data_"+i+".txt";
+//	data_filePath_Neo = "DataFiles/data_"+i+".txt";
+//	data_filePath_Neo = "DataFiles/data.txt";
 	neo4j.setFilePath(data_filePath_Neo);
 	i++;
 	neo4j.Insert(); //1000
@@ -412,7 +553,8 @@ public class Main {
 	} catch (Exception e) {
 		e.printStackTrace();
 	}
-	data_filePath_Neo = "DataFiles/data_"+i+".txt";
+//	data_filePath_Neo = "DataFiles/data_"+i+".txt";
+//	data_filePath_Neo = "DataFiles/data.txt";
 	neo4j.setFilePath(data_filePath_Neo);
 	i++;
 	neo4j.Insert(); //30000
@@ -425,7 +567,8 @@ public class Main {
 	} catch (Exception e) {
 		e.printStackTrace();
 	}
-	data_filePath_Neo = "DataFiles/data_"+i+".txt";
+//	data_filePath_Neo = "DataFiles/data_"+i+".txt";
+//	data_filePath_Neo = "DataFiles/data.txt";
 	neo4j.setFilePath(data_filePath_Neo);
 	i++;
 	neo4j.Insert(); //50000
@@ -436,7 +579,8 @@ public class Main {
 	} catch (Exception e) {
 		e.printStackTrace();
 	}
-	data_filePath_Neo = "DataFiles/data_"+i+".txt";
+//	data_filePath_Neo = "DataFiles/data_"+i+".txt";
+//	data_filePath_Neo = "DataFiles/data.txt";
 	neo4j.setFilePath(data_filePath_Neo);
 	i++;
 	neo4j.Insert(); //20000
