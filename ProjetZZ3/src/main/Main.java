@@ -37,41 +37,10 @@ public class Main {
 //			e.printStackTrace();
 //		}
 
-		
-/*********************************MySQL*************************************/			
-//		MySQL mySQL = new MySQL();
-//		mySQL.setFilePath(data_filePath_Sql);
-//		mySQL.Connect();
-//		
-//		mySQL.CreateTables();	//Gère les clés étrangères
-//		mySQL.Insert();
-//		
-//		mySQL.ReadAll();
-//		mySQL.Update("update Client set abonnement_client=\"true\" where abonnement_client=\"false\"; ");
-//		mySQL.DeleteFournisseur("where id_fournisseur >\"2000\" and id_fournisseur < \"4000\" ");	
-//		mySQL.ReadGenerique("Select count(*) from Client where abonnement_client=\"true\" AND id_client<\"3000\";");
-//		
-//		mySQL.Read();	//Requête en dur dans le code
-////		mySQL.ReadSelectEtoile("where abonnement_client=\"false\"");		//Uniquement pour un select*
-//		
-//		mySQL.ReadGenerique("Select id_produit from commande where date_commande=\"5/3/2013\" or id_client=\"2\";");
-//		mySQL.ReadGenerique("Select count(*) from Client where abonnement_client=\"true\" AND id_client < \"3000\";");
-//		
-//		mySQL.Update("update Client set ville_client=\"UnVilleAssezLonguePourQueJeLaVoisBienDansLaBase\" where abonnement_client=\"true\"; ");
-//		
-//		mySQL.DeleteClient("where iban_client like \"F%\" ");
-//		mySQL.DeleteFournisseur("where email_fournisseur =\"\" and telephone_fournisseur = \"\" ");		
-//		mySQL.DeleteProduit("where couleur_produit = \"Mauv\"");
-//		mySQL.DeleteCommande("where date_commande like \"%/3/%\" ");
-//		
-//		mySQL.DeleteAll();
-//		mySQL.DropTable();
-//		mySQL.Disconnect();
-
-		
 /********************************Plan de Test************************************/
 /*********************************MongoDB*************************************/				
-		/*int i = 1;
+/*
+		int i = 1;
 		
 		MongoDB mongoDB = new MongoDB();
 		mongoDB.InitialisationListes();
@@ -242,41 +211,70 @@ public class Main {
 		mongoDB.ReadAll();
 		mongoDB.DeleteAll();
 		
-		mongoDB.Disconnect(); */
+		mongoDB.Disconnect();
+*/
+/*********************************MySQL*************************************/
+/*
+		int i = 1;
+		MySQL mySQL = new MySQL();
+		mySQL.setFilePath("DataFiles/data_"+i+".sql");
+		mySQL.Connect();
+		mySQL.CreateTables();	//Gère les clés étrangères
 		
-/*********************************MySQL*************************************/			
-	//	MySQL mySQL = new MySQL();
-	//	mySQL.setFilePath(data_filePath_Sql);
-	//	mySQL.Connect();
-	//	
-	//	mySQL.CreateTables();	//Gère les clés étrangères
-	//	mySQL.Insert();
-	//	
-	//	mySQL.ReadAll();
-	//	mySQL.Update("update Client set abonnement_client=\"true\" where abonnement_client=\"false\"; ");
-	//	mySQL.DeleteFournisseur("where id_fournisseur >\"2000\" and id_fournisseur < \"4000\" ");	
-	//	mySQL.ReadGenerique("Select count(*) from Client where abonnement_client=\"true\" AND id_client<\"3000\";");
-	//	
-	//	mySQL.Read();	//Requête en dur dans le code
-	////	mySQL.ReadSelectEtoile("where abonnement_client=\"false\"");		//Uniquement pour un select*
-	//	
-	//	mySQL.ReadGenerique("Select id_produit from commande where date_commande=\"5/3/2013\" or id_client=\"2\";");
-	//	mySQL.ReadGenerique("Select count(*) from Client where abonnement_client=\"true\" AND id_client < \"3000\";");
-	//	
-	//	mySQL.Update("update Client set ville_client=\"UnVilleAssezLonguePourQueJeLaVoisBienDansLaBase\" where abonnement_client=\"true\"; ");
-	//	
-	//	mySQL.DeleteClient("where iban_client like \"F%\" ");
-	//	mySQL.DeleteFournisseur("where email_fournisseur =\"\" and telephone_fournisseur = \"\" ");		
-	//	mySQL.DeleteProduit("where couleur_produit = \"Mauv\"");
-	//	mySQL.DeleteCommande("where date_commande like \"%/3/%\" ");
-	//	
-	//	mySQL.DeleteAll();
-	//	mySQL.DropTable();
-	//	mySQL.Disconnect();
-	
-		
+		//1 000
+		mySQL.Insert();
+		mySQL.ReadGenerique("Select id_commande from Commande where id_client in (Select id_client from Client where abonnement_client=\"true\");");
+		mySQL.ReadGenerique("Select id_commande from Commande where id_client in (Select id_client from Client where abonnement_client=\"true\") and id_produit in (Select id_produit from Produit where couleur_produit = \"Mauv\");");
+		//10 000
+		mySQL.Insert();
+		mySQL.Update("update Fournisseur set devise_fournisseur=\"EUR\" where Telephone_fournisseur like \"+33%\"; ");
+		mySQL.DeleteClient("where gender_client = \"Male\" ");
+		//50 000
+		mySQL.Insert();
+		mySQL.ReadAll();
+		//20 000
+		mySQL.Insert();
+		mySQL.Update("update Client set abonnement_client=\"true\" where abonnement_client=\"false\"; ");
+		mySQL.ReadGenerique("Select id_commande from commande where id_produit in (Select id_produit from Produit where id_fournisseur in (Select id_fournisseur from Fournisseur where devise_fournisseur = \"DOLL\")) and id_produit in (Select id_produit from Produit where prix_produit > 4000);");
+		mySQL.ReadGenerique("Select id_commande from commande where id_produit in (Select id_produit from Produit where couleur_produit=\"Blue\");");
+		mySQL.DeleteFournisseur("where id_fournisseur > 2000 and id_fournisseur < 4000");		
+		mySQL.ReadAll();		
+		//1 000
+		mySQL.Insert();
+		//30 000
+		mySQL.Insert();
+		mySQL.ReadAll();
+		mySQL.Update("update Client set ville_client=\"Aubiere\" where ville_client=\"Cahors\"; ");
+		//1 000
+		mySQL.Insert();
+		mySQL.ReadGenerique("Select id_commande from commande where id_produit in (Select id_produit from Produit where id_fournisseur = 10);");
+		//30 000
+		mySQL.Insert();
+		mySQL.ReadAll();
+		mySQL.DeleteFournisseur("where id_fournisseur > 2000 and id_fournisseur < 4000");		
+		mySQL.Update("update Produit set couleur_produit=\"Pink\" where couleur_produit= \"Yellow\";");
+		//20 000
+		mySQL.Insert();
+		//1 000
+		mySQL.Insert();
+		mySQL.ReadGenerique("Select id_commande from commande where id_client in (Select id_client from Client where abonnement_client = \"true\") or id_produit in (Select id_produit from Produit where prix_produit > 4000);");
+		mySQL.ReadAll();
+		//30 000
+		mySQL.Insert();
+		mySQL.ReadGenerique("Select id_commande from commande where id_client in (Select id_client from Client where gender_client = \"female\");");
+		mySQL.DeleteProduit("where prix_produit > 300 and prix_produit < 1000");		
+		//50 000
+		mySQL.Insert();
+		//20 000
+		mySQL.Insert();
+		mySQL.ReadAll();
+		mySQL.DeleteAll();
+
+		mySQL.Disconnect();
+*/
 /***********************************NEO4J***************************************/			
-	/*int i = 1;
+/*
+	int i = 1;
 	Neo4j neo4j = new Neo4j();
 	neo4j.Connect();
 	String data_filePath_Source = "DataFiles/data_"+i+".csv";
@@ -444,10 +442,11 @@ public class Main {
 	neo4j.Insert(); //20000
 	neo4j.ReadAll();
 	neo4j.DeleteAll();
-	neo4j.Disconnect();*/
-	
+	neo4j.Disconnect();
+*/
 /*********************************OracleNoSQL*************************************/
-		/*int i = 1;
+/*
+		int i = 1;
 		OracleNoSQL oracleNoSQL = new OracleNoSQL();
 		oracleNoSQL.Connect();
 		oracleNoSQL.CreateTable();
@@ -525,7 +524,8 @@ public class Main {
 		oracleNoSQL.Insert(); //20000
 		oracleNoSQL.readAll();
 		oracleNoSQL.DeleteAll();		
-		oracleNoSQL.Disconnect();*/
+		oracleNoSQL.Disconnect();
+*/
 	}	
 
 }
