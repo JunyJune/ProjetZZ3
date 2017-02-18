@@ -39,8 +39,8 @@ public class Main {
 
 /********************************Plan de Test************************************/
 /*********************************MongoDB*************************************/				
-/*
-		int i = 1;
+
+/*		int i = 1;
 		
 		MongoDB mongoDB = new MongoDB();
 		mongoDB.InitialisationListes();
@@ -72,7 +72,7 @@ public class Main {
 		mongoDB.setFilePath(data_filePath_Json);
 		mongoDB.Insert(); //10 000
 		mongoDB.UpdateWithParameter("devise_fournisseur", "EUR", "telephone_fournisseur", "+33");
-		mongoDB.DeleteOne("gender_client", "male");
+		mongoDB.DeleteOne("gender_client", "Male");
 		jsonConverter = new CSVtoJSON();
 		data_filePath_Source = "DataFiles/data_"+i+".csv";
 		try {
@@ -99,7 +99,7 @@ public class Main {
 		mongoDB.setFilePath(data_filePath_Json);
 		mongoDB.Insert(); //20 000
 		mongoDB.UpdateWithParameter("abonnement_client", "false", "abonnement_client", "true");
-		mongoDB.ReadOne("devise_fournisseur", "=", "DOLL", true, "prix_produit", ">", "1000" );
+		mongoDB.ReadOne("devise_fournisseur", "=", "USD", true, "prix_produit", ">", "1000" );
 		mongoDB.ReadOne("couleur_produit", "=", "Blue", false, null, null, null );
 		mongoDB.DeleteBetween("id_fournisseur", "2000", "4000");
 		mongoDB.ReadAll();
@@ -195,7 +195,7 @@ public class Main {
 		i++;
 		mongoDB.setFilePath(data_filePath_Json);
 		mongoDB.Insert(); //30 000
-		mongoDB.ReadOne("gender_client", "=", "female", false, null, null, null );
+		mongoDB.ReadOne("gender_client", "=", "Female", false, null, null, null );
 		mongoDB.DeleteBetween("prix_produit", "300", "1000");
 		jsonConverter = new CSVtoJSON();
 		data_filePath_Source = "DataFiles/data_"+i+".csv";
@@ -224,8 +224,8 @@ public class Main {
 		mongoDB.ReadAll();
 		mongoDB.DeleteAll();
 		
-		mongoDB.Disconnect();
-*/
+		mongoDB.Disconnect();*/
+
 /*********************************MySQL*************************************/
 /*
 		int i = 1;
@@ -285,7 +285,7 @@ public class Main {
 		i++;
 		mySQL.Insert();
 		mySQL.Update("update Client set abonnement_client=\"true\" where abonnement_client=\"false\"; ");
-		mySQL.ReadGenerique("Select id_commande from commande where id_produit in (Select id_produit from Produit where id_fournisseur in (Select id_fournisseur from Fournisseur where devise_fournisseur = \"DOLL\")) and id_produit in (Select id_produit from Produit where prix_produit > 4000);");
+		mySQL.ReadGenerique("Select id_commande from commande where id_produit in (Select id_produit from Produit where id_fournisseur in (Select id_fournisseur from Fournisseur where devise_fournisseur = \"USD\")) and id_produit in (Select id_produit from Produit where prix_produit > 4000);");
 		mySQL.ReadGenerique("Select id_commande from commande where id_produit in (Select id_produit from Produit where couleur_produit=\"Blue\");");
 		mySQL.DeleteFournisseur("where id_fournisseur > 2000 and id_fournisseur < 4000");		
 		mySQL.ReadAll();		
@@ -338,7 +338,7 @@ public class Main {
 		mySQL.Insert();
 		mySQL.ReadAll();
 		mySQL.DeleteFournisseur("where id_fournisseur > 2000 and id_fournisseur < 4000");		
-		mySQL.Update("update Produit set couleur_produit=\"Pink\" where couleur_produit= \"Yellow\";");
+		mySQL.Update("update Produit set couleur_produit=\"Beige\" where couleur_produit= \"Yellow\";");
 		//20 000
 		data_filePath_Source = "DataFiles/data_"+i+".csv";
 		try {
@@ -374,7 +374,7 @@ public class Main {
 		mySQL.setFilePath(data_filePath_Sql);
 		i++;
 		mySQL.Insert();
-		mySQL.ReadGenerique("Select id_commande from commande where id_client in (Select id_client from Client where gender_client = \"female\");");
+		mySQL.ReadGenerique("Select id_commande from commande where id_client in (Select id_client from Client where gender_client = \"Female\");");
 		mySQL.DeleteProduit("where prix_produit > 300 and prix_produit < 1000");		
 		//50 000
 		data_filePath_Source = "DataFiles/data_"+i+".csv";
@@ -404,190 +404,190 @@ public class Main {
 		mySQL.Disconnect();
 */
 /***********************************NEO4J***************************************/			
-/*
+
 	int i = 1;
 	Neo4j neo4j = new Neo4j();
 	neo4j.Connect();
-	String data_filePath_Source = "DataFiles/data_"+i+".csv";
-	CSVtoNEO neoConverter = new CSVtoNEO();
-	try {
-		neoConverter.execute(data_filePath_Source);
-	} catch (Exception e) {
-		e.printStackTrace();
-	}
-//	String data_filePath_Neo = "DataFiles/data_"+i+".txt";
-	String data_filePath_Neo = "DataFiles/data.txt";
-	neo4j.setFilePath(data_filePath_Neo);
-	i++;
-	neo4j.Insert(); //1000
-	neo4j.ReadOne("Client","abonnement_client", "=", "false", false,null, null,null, null);
-	neo4j.ReadOne("Client","abonnement_client", "=", "false", true,"Produit", "couleur_produit", "=", "Mauv");
-	data_filePath_Source = "DataFiles/data_"+i+".csv";
-	neoConverter = new CSVtoNEO();
-	try {
-		neoConverter.execute(data_filePath_Source);
-	} catch (Exception e) {
-		e.printStackTrace();
-	}
-//	data_filePath_Neo = "DataFiles/data_"+i+".txt";
-//	data_filePath_Neo = "DataFiles/data.txt";
-	neo4j.setFilePath(data_filePath_Neo);
-	i++;
-	neo4j.Insert(); //10000
-	neo4j.UpdateWithParameter("Fournisseur","devise_fournisseur","EUR", "telephone_fournisseur", "+33");
-	neo4j.DeleteOne("Client", "gender_client", "male");
-	data_filePath_Source = "DataFiles/data_"+i+".csv";
-	neoConverter = new CSVtoNEO();
-	try {
-		neoConverter.execute(data_filePath_Source);
-	} catch (Exception e) {
-		e.printStackTrace();
-	}
-//	data_filePath_Neo = "DataFiles/data_"+i+".txt";
-//	data_filePath_Neo = "DataFiles/data.txt";
-	neo4j.setFilePath(data_filePath_Neo);
-	i++;
-	neo4j.Insert(); //50000
-	neo4j.ReadAll();
-	data_filePath_Source = "DataFiles/data_"+i+".csv";
-	neoConverter = new CSVtoNEO();
-	try {
-		neoConverter.execute(data_filePath_Source);
-	} catch (Exception e) {
-		e.printStackTrace();
-	}
-//	data_filePath_Neo = "DataFiles/data_"+i+".txt";
-//	data_filePath_Neo = "DataFiles/data.txt";
-	neo4j.setFilePath(data_filePath_Neo);
-	i++;
-	neo4j.Insert(); //20000
-	neo4j.UpdateWithParameter("Client","abonnement_client","true", "abonnement_client", "false");
-	neo4j.ReadOne("Fournisseur","devise_fournisseur", "=", "DOLL", true,"Produit", "prix_produit", ">", "1000");
-	neo4j.ReadOne("Produit","couleur_produit", "=", "Blue", false,null, null, null, null);
-	neo4j.DeleteBetween("Fournisseur", "id_fournisseur", "2000", "4000");
-	neo4j.ReadAll();
-	data_filePath_Source = "DataFiles/data_"+i+".csv";
-	neoConverter = new CSVtoNEO();
-	try {
-		neoConverter.execute(data_filePath_Source);
-	} catch (Exception e) {
-		e.printStackTrace();
-	}
-//	data_filePath_Neo = "DataFiles/data_"+i+".txt";
-//	data_filePath_Neo = "DataFiles/data.txt";
-	neo4j.setFilePath(data_filePath_Neo);
-	i++;
-	neo4j.Insert(); //1000
-	data_filePath_Source = "DataFiles/data_"+i+".csv";
-	neoConverter = new CSVtoNEO();
-	try {
-		neoConverter.execute(data_filePath_Source);
-	} catch (Exception e) {
-		e.printStackTrace();
-	}
-//	data_filePath_Neo = "DataFiles/data_"+i+".txt";
-//	data_filePath_Neo = "DataFiles/data.txt";
-	neo4j.setFilePath(data_filePath_Neo);
-	i++;
-	neo4j.Insert(); //30000
-	neo4j.ReadAll();
-	neo4j.UpdateWithParameter("Client","ville_client","Cahors", "ville_client", "Aubiere");
-	data_filePath_Source = "DataFiles/data_"+i+".csv";
-	neoConverter = new CSVtoNEO();
-	try {
-		neoConverter.execute(data_filePath_Source);
-	} catch (Exception e) {
-		e.printStackTrace();
-	}
-//	data_filePath_Neo = "DataFiles/data_"+i+".txt";
-//	data_filePath_Neo = "DataFiles/data.txt";
-	neo4j.setFilePath(data_filePath_Neo);
-	i++;
-	neo4j.Insert(); //1000
-	neo4j.ReadOne("Fournisseur","id_fournisseur", "=", "10", false,null, null, null, null);
-	data_filePath_Source = "DataFiles/data_"+i+".csv";
-	neoConverter = new CSVtoNEO();
-	try {
-		neoConverter.execute(data_filePath_Source);
-	} catch (Exception e) {
-		e.printStackTrace();
-	}
-//	data_filePath_Neo = "DataFiles/data_"+i+".txt";
-//	data_filePath_Neo = "DataFiles/data.txt";
-	neo4j.setFilePath(data_filePath_Neo);
-	i++;
-	neo4j.Insert(); //30000
-	neo4j.ReadAll();
-	neo4j.DeleteBetween("Fournisseur", "id_fournisseur", "1", "1000");
-	neo4j.UpdateWithParameter("Produit","couleur_produit","Yellow", "couleur_produit", "Beige");
-	data_filePath_Source = "DataFiles/data_"+i+".csv";
-	neoConverter = new CSVtoNEO();
-	try {
-		neoConverter.execute(data_filePath_Source);
-	} catch (Exception e) {
-		e.printStackTrace();
-	}
-//	data_filePath_Neo = "DataFiles/data_"+i+".txt";
-//	data_filePath_Neo = "DataFiles/data.txt";
-	neo4j.setFilePath(data_filePath_Neo);
-	i++;
-	neo4j.Insert(); //20000
-	data_filePath_Source = "DataFiles/data_"+i+".csv";
-	neoConverter = new CSVtoNEO();
-	try {
-		neoConverter.execute(data_filePath_Source);
-	} catch (Exception e) {
-		e.printStackTrace();
-	}
-//	data_filePath_Neo = "DataFiles/data_"+i+".txt";
-//	data_filePath_Neo = "DataFiles/data.txt";
-	neo4j.setFilePath(data_filePath_Neo);
-	i++;
-	neo4j.Insert(); //1000
-	neo4j.ReadOne("Client","abonnement_client", "=", "true", true,"Produit", "prix_produit", ">", "4000");
-	neo4j.ReadAll();
-	data_filePath_Source = "DataFiles/data_"+i+".csv";
-	neoConverter = new CSVtoNEO();
-	try {
-		neoConverter.execute(data_filePath_Source);
-	} catch (Exception e) {
-		e.printStackTrace();
-	}
-//	data_filePath_Neo = "DataFiles/data_"+i+".txt";
-//	data_filePath_Neo = "DataFiles/data.txt";
-	neo4j.setFilePath(data_filePath_Neo);
-	i++;
-	neo4j.Insert(); //30000
-	neo4j.ReadOne("Client","gender_client", "=", "female", false,null, null, null, null);
-	neo4j.DeleteBetween("Produit", "prix_produit", "300", "1000");
-	data_filePath_Source = "DataFiles/data_"+i+".csv";
-	neoConverter = new CSVtoNEO();
-	try {
-		neoConverter.execute(data_filePath_Source);
-	} catch (Exception e) {
-		e.printStackTrace();
-	}
-//	data_filePath_Neo = "DataFiles/data_"+i+".txt";
-//	data_filePath_Neo = "DataFiles/data.txt";
-	neo4j.setFilePath(data_filePath_Neo);
-	i++;
-	neo4j.Insert(); //50000
-	data_filePath_Source = "DataFiles/data_"+i+".csv";
-	neoConverter = new CSVtoNEO();
-	try {
-		neoConverter.execute(data_filePath_Source);
-	} catch (Exception e) {
-		e.printStackTrace();
-	}
-//	data_filePath_Neo = "DataFiles/data_"+i+".txt";
-//	data_filePath_Neo = "DataFiles/data.txt";
-	neo4j.setFilePath(data_filePath_Neo);
-	i++;
-	neo4j.Insert(); //20000
-	neo4j.ReadAll();
+//	String data_filePath_Source = "DataFiles/data_"+i+".csv";
+//	CSVtoNEO neoConverter = new CSVtoNEO();
+//	try {
+//		neoConverter.execute(data_filePath_Source);
+//	} catch (Exception e) {
+//		e.printStackTrace();
+//	}
+////	String data_filePath_Neo = "DataFiles/data_"+i+".txt";
+//	String data_filePath_Neo = "DataFiles/data.txt";
+//	neo4j.setFilePath(data_filePath_Neo);
+//	i++;
+//	neo4j.Insert(); //1000
+//	neo4j.ReadOne("Client","abonnement_client", "=", "false", false,null, null,null, null);
+//	neo4j.ReadOne("Client","abonnement_client", "=", "false", true,"Produit", "couleur_produit", "=", "Mauv");
+//	data_filePath_Source = "DataFiles/data_"+i+".csv";
+//	neoConverter = new CSVtoNEO();
+//	try {
+//		neoConverter.execute(data_filePath_Source);
+//	} catch (Exception e) {
+//		e.printStackTrace();
+//	}
+////	data_filePath_Neo = "DataFiles/data_"+i+".txt";
+////	data_filePath_Neo = "DataFiles/data.txt";
+//	neo4j.setFilePath(data_filePath_Neo);
+//	i++;
+//	neo4j.Insert(); //10000
+//	neo4j.UpdateWithParameter("Fournisseur","devise_fournisseur","EUR", "telephone_fournisseur", "+33");
+//	neo4j.DeleteOne("Client", "gender_client", "Male");
+//	data_filePath_Source = "DataFiles/data_"+i+".csv";
+//	neoConverter = new CSVtoNEO();
+//	try {
+//		neoConverter.execute(data_filePath_Source);
+//	} catch (Exception e) {
+//		e.printStackTrace();
+//	}
+////	data_filePath_Neo = "DataFiles/data_"+i+".txt";
+////	data_filePath_Neo = "DataFiles/data.txt";
+//	neo4j.setFilePath(data_filePath_Neo);
+//	i++;
+//	neo4j.Insert(); //50000
+//	neo4j.ReadAll();
+//	data_filePath_Source = "DataFiles/data_"+i+".csv";
+//	neoConverter = new CSVtoNEO();
+//	try {
+//		neoConverter.execute(data_filePath_Source);
+//	} catch (Exception e) {
+//		e.printStackTrace();
+//	}
+////	data_filePath_Neo = "DataFiles/data_"+i+".txt";
+////	data_filePath_Neo = "DataFiles/data.txt";
+//	neo4j.setFilePath(data_filePath_Neo);
+//	i++;
+//	neo4j.Insert(); //20000
+//	neo4j.UpdateWithParameter("Client","abonnement_client","true", "abonnement_client", "false");
+//	neo4j.ReadOne("Fournisseur","devise_fournisseur", "=", "USD", true,"Produit", "prix_produit", ">", "1000");
+//	neo4j.ReadOne("Produit","couleur_produit", "=", "Blue", false,null, null, null, null);
+//	neo4j.DeleteBetween("Fournisseur", "id_fournisseur", "2000", "4000");
+//	neo4j.ReadAll();
+//	data_filePath_Source = "DataFiles/data_"+i+".csv";
+//	neoConverter = new CSVtoNEO();
+//	try {
+//		neoConverter.execute(data_filePath_Source);
+//	} catch (Exception e) {
+//		e.printStackTrace();
+//	}
+////	data_filePath_Neo = "DataFiles/data_"+i+".txt";
+////	data_filePath_Neo = "DataFiles/data.txt";
+//	neo4j.setFilePath(data_filePath_Neo);
+//	i++;
+//	neo4j.Insert(); //1000
+//	data_filePath_Source = "DataFiles/data_"+i+".csv";
+//	neoConverter = new CSVtoNEO();
+//	try {
+//		neoConverter.execute(data_filePath_Source);
+//	} catch (Exception e) {
+//		e.printStackTrace();
+//	}
+////	data_filePath_Neo = "DataFiles/data_"+i+".txt";
+////	data_filePath_Neo = "DataFiles/data.txt";
+//	neo4j.setFilePath(data_filePath_Neo);
+//	i++;
+//	neo4j.Insert(); //30000
+//	neo4j.ReadAll();
+//	neo4j.UpdateWithParameter("Client","ville_client","Cahors", "ville_client", "Aubiere");
+//	data_filePath_Source = "DataFiles/data_"+i+".csv";
+//	neoConverter = new CSVtoNEO();
+//	try {
+//		neoConverter.execute(data_filePath_Source);
+//	} catch (Exception e) {
+//		e.printStackTrace();
+//	}
+////	data_filePath_Neo = "DataFiles/data_"+i+".txt";
+////	data_filePath_Neo = "DataFiles/data.txt";
+//	neo4j.setFilePath(data_filePath_Neo);
+//	i++;
+//	neo4j.Insert(); //1000
+//	neo4j.ReadOne("Fournisseur","id_fournisseur", "=", "10", false,null, null, null, null);
+//	data_filePath_Source = "DataFiles/data_"+i+".csv";
+//	neoConverter = new CSVtoNEO();
+//	try {
+//		neoConverter.execute(data_filePath_Source);
+//	} catch (Exception e) {
+//		e.printStackTrace();
+//	}
+////	data_filePath_Neo = "DataFiles/data_"+i+".txt";
+////	data_filePath_Neo = "DataFiles/data.txt";
+//	neo4j.setFilePath(data_filePath_Neo);
+//	i++;
+//	neo4j.Insert(); //30000
+//	neo4j.ReadAll();
+//	neo4j.DeleteBetween("Fournisseur", "id_fournisseur", "1", "1000");
+//	neo4j.UpdateWithParameter("Produit","couleur_produit","Yellow", "couleur_produit", "Beige");
+//	data_filePath_Source = "DataFiles/data_"+i+".csv";
+//	neoConverter = new CSVtoNEO();
+//	try {
+//		neoConverter.execute(data_filePath_Source);
+//	} catch (Exception e) {
+//		e.printStackTrace();
+//	}
+////	data_filePath_Neo = "DataFiles/data_"+i+".txt";
+////	data_filePath_Neo = "DataFiles/data.txt";
+//	neo4j.setFilePath(data_filePath_Neo);
+//	i++;
+//	neo4j.Insert(); //20000
+//	data_filePath_Source = "DataFiles/data_"+i+".csv";
+//	neoConverter = new CSVtoNEO();
+//	try {
+//		neoConverter.execute(data_filePath_Source);
+//	} catch (Exception e) {
+//		e.printStackTrace();
+//	}
+////	data_filePath_Neo = "DataFiles/data_"+i+".txt";
+////	data_filePath_Neo = "DataFiles/data.txt";
+//	neo4j.setFilePath(data_filePath_Neo);
+//	i++;
+//	neo4j.Insert(); //1000
+//	neo4j.ReadOne("Client","abonnement_client", "=", "true", true,"Produit", "prix_produit", ">", "4000");
+//	neo4j.ReadAll();
+//	data_filePath_Source = "DataFiles/data_"+i+".csv";
+//	neoConverter = new CSVtoNEO();
+//	try {
+//		neoConverter.execute(data_filePath_Source);
+//	} catch (Exception e) {
+//		e.printStackTrace();
+//	}
+////	data_filePath_Neo = "DataFiles/data_"+i+".txt";
+////	data_filePath_Neo = "DataFiles/data.txt";
+//	neo4j.setFilePath(data_filePath_Neo);
+//	i++;
+//	neo4j.Insert(); //30000
+//	neo4j.ReadOne("Client","gender_client", "=", "Female", false,null, null, null, null);
+//	neo4j.DeleteBetween("Produit", "prix_produit", "300", "1000");
+//	data_filePath_Source = "DataFiles/data_"+i+".csv";
+//	neoConverter = new CSVtoNEO();
+//	try {
+//		neoConverter.execute(data_filePath_Source);
+//	} catch (Exception e) {
+//		e.printStackTrace();
+//	}
+////	data_filePath_Neo = "DataFiles/data_"+i+".txt";
+////	data_filePath_Neo = "DataFiles/data.txt";
+//	neo4j.setFilePath(data_filePath_Neo);
+//	i++;
+//	neo4j.Insert(); //50000
+//	data_filePath_Source = "DataFiles/data_"+i+".csv";
+//	neoConverter = new CSVtoNEO();
+//	try {
+//		neoConverter.execute(data_filePath_Source);
+//	} catch (Exception e) {
+//		e.printStackTrace();
+//	}
+////	data_filePath_Neo = "DataFiles/data_"+i+".txt";
+////	data_filePath_Neo = "DataFiles/data.txt";
+//	neo4j.setFilePath(data_filePath_Neo);
+//	i++;
+//	neo4j.Insert(); //20000
+//	neo4j.ReadAll();
 	neo4j.DeleteAll();
 	neo4j.Disconnect();
-*/
+
 /*********************************OracleNoSQL*************************************/
 /*
 		int i = 1;
@@ -605,7 +605,7 @@ public class Main {
 		i++;
 		oracleNoSQL.Insert(); //10000
 		oracleNoSQL.UpdateWithParameter("devise_fournisseur","EUR", "telephone_fournisseur", "+33");
-		oracleNoSQL.DeleteOne("gender_client", "male");
+		oracleNoSQL.DeleteOne("gender_client", "Male");
 		data_filePath_Source = "DataFiles/data_"+i+".csv";
 		oracleNoSQL.setFilePath(data_filePath_Source);
 		i++;
@@ -616,7 +616,7 @@ public class Main {
 		i++;
 		oracleNoSQL.Insert(); //20000
 		oracleNoSQL.UpdateWithParameter("abonnement_client","true", "abonnement_client", "false");
-		oracleNoSQL.ReadOne("devise_fournisseur", "=", "DOLL", true, "prix_produit", ">", "1000" );
+		oracleNoSQL.ReadOne("devise_fournisseur", "=", "USD", true, "prix_produit", ">", "1000" );
 		oracleNoSQL.ReadOne("couleur_produit", "=", "Blue", false, null,null, null );
 		oracleNoSQL.DeleteBetween("id_fournisseur", "2000", "4000");
 		oracleNoSQL.readAll();
@@ -656,7 +656,7 @@ public class Main {
 		oracleNoSQL.setFilePath(data_filePath_Source);
 		i++;
 		oracleNoSQL.Insert(); //30000
-		oracleNoSQL.ReadOne("gender_client", "=", "female", false, null,null, null );
+		oracleNoSQL.ReadOne("gender_client", "=", "Female", false, null,null, null );
 		oracleNoSQL.DeleteBetween("prix_produit", "300", "1000");
 		data_filePath_Source = "DataFiles/data_"+i+".csv";
 		oracleNoSQL.setFilePath(data_filePath_Source);
