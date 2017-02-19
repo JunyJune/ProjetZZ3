@@ -17,6 +17,8 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -33,6 +35,12 @@ public class MySQL {
 	HSSFWorkbook wb;
 	HSSFSheet sheet;
 	FileOutputStream fileOut;
+	
+
+	List<String> client_ids = new ArrayList<String>();
+	List<String> fournisseur_ids = new ArrayList<String>();
+	List<String> produit_ids = new ArrayList<String>();
+	List<String> commande_ids = new ArrayList<String>();
 	
 	/******************************************************************************************/
 	/***************************************Accesseurs*****************************************/
@@ -96,7 +104,8 @@ public class MySQL {
 				+ "telephone_client varchar(255),"
 				+ "iban_client varchar(255),"
 				+ "abonnement_client varchar(255)"
-				+ ");"
+				+ ")"
+				+ " ENGINE = MyISAM;"
 				;
 		
 		String query2 = "create table if not exists Fournisseur ("
@@ -108,7 +117,8 @@ public class MySQL {
 				+ "email_fournisseur varchar(255),"
 				+ "iban_fournisseur varchar(255),"
 				+ "telephone_fournisseur varchar(255)"
-				+ ");"
+				+ ")"
+				+ " ENGINE = MyISAM;"
 				;
 		
 		String query3 = "create table if not exists Produit ("
@@ -118,7 +128,8 @@ public class MySQL {
 				+ "couleur_produit varchar(255),"
 				+ "prix_produit varchar(255),"
 			 	+ "label_produit varchar(255)"
-				+ ");"
+				+ ")"
+				+ " ENGINE = MyISAM;"
 				;
 		
 		String query4 = "create table if not exists Commande ("
@@ -128,7 +139,8 @@ public class MySQL {
 				+ "id_client int,"
 				+ "foreign key (id_client) references Client(id_client),"
 				+ "date_commande varchar(255)"
-				+ ");"
+				+ ")"
+				+ " ENGINE = MyISAM;"
 				;
 		try {
 			PreparedStatement preparedStatement1 = (PreparedStatement) connection.prepareStatement(query1);
@@ -158,14 +170,14 @@ public class MySQL {
 			BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 			
 			String query = "";
-			List<String> client_ids = new ArrayList<String>();
-			List<String> fournisseur_ids = new ArrayList<String>();
-			List<String> produit_ids = new ArrayList<String>();
-			List<String> commande_ids = new ArrayList<String>();
-			client_ids.clear();
-			fournisseur_ids.clear();
-			produit_ids.clear();
-			commande_ids.clear();
+//			List<String> client_ids = new ArrayList<String>();
+//			List<String> fournisseur_ids = new ArrayList<String>();
+//			List<String> produit_ids = new ArrayList<String>();
+//			List<String> commande_ids = new ArrayList<String>();
+//			client_ids.clear();
+//			fournisseur_ids.clear();
+//			produit_ids.clear();
+//			commande_ids.clear();
 						
 			while ((query = bufferedReader.readLine()) != null) {
 				PreparedStatement preparedStatement = (PreparedStatement) connection.prepareStatement(query + ";");
@@ -448,7 +460,7 @@ public void ReadSelectEtoile(String whereClause){
 			e.printStackTrace();
 		}
 			
-		writeResult("Lecture générique", lignesLues , this.toString() , time + " ms"   );
+		writeResult("Lecture ", lignesLues , this.toString() , time + " ms"   );
 	}
 
 /******************************************************************************************/
@@ -559,6 +571,11 @@ public void ReadSelectEtoile(String whereClause){
 		long time = System.currentTimeMillis()-startTime;
 		
 		writeResult("Delete", lignesSupp , this.toString() , time + " ms"   );
+
+		client_ids.clear();
+		fournisseur_ids.clear();
+		produit_ids.clear();
+		commande_ids.clear();
 	}
 	
 	/******************************************************************************************/
@@ -816,6 +833,11 @@ public void ReadSelectEtoile(String whereClause){
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
+		client_ids.clear();
+		fournisseur_ids.clear();
+		produit_ids.clear();
+		commande_ids.clear();
 	}
 	
 	/******************************************************************************************/
