@@ -17,8 +17,6 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
-import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -155,6 +153,126 @@ public class MySQL {
 			e.printStackTrace();
 		}
 	}
+	
+//	public void CreateTables(){
+//		System.out.println("Création de table dans la base de données MySQL\n");
+//		
+//		String query1 = "create table if not exists Client ("
+//				+ "id_client int primary key,"
+//				+ "ville_client varchar(255),"
+//				+ "prenom_client varchar(255),"
+//				+ "nom_client varchar(255),"
+//			 	+ "email_client varchar(255),"
+//				+ "gender_client varchar(255),"
+//				+ "telephone_client varchar(255),"
+//				+ "iban_client varchar(255),"
+//				+ "abonnement_client varchar(255)"
+//				+ ")"
+//				+ " ENGINE = MyISAM;"
+//				;
+//		
+//		String query2 = "create table if not exists Fournisseur ("
+//				+ "id_fournisseur int primary key,"
+//				+ "ville_fournisseur varchar(255),"
+//				+ "nom_fournisseur varchar(255),"
+//				+ "slogan_fournisseur varchar(255),"
+//			 	+ "devise_fournisseur varchar(255),"
+//				+ "email_fournisseur varchar(255),"
+//				+ "iban_fournisseur varchar(255),"
+//				+ "telephone_fournisseur varchar(255)"
+//				+ ")"
+//				+ " ENGINE = MyISAM;"
+//				;
+//		
+//		String query3 = "create table if not exists Produit ("
+//				+ "id_produit int primary key,"
+//				+ "id_fournisseur int,"
+////				+ "foreign key (id_fournisseur) references Fournisseur(id_fournisseur),"
+//				+ "couleur_produit varchar(255),"
+//				+ "prix_produit varchar(255),"
+//			 	+ "label_produit varchar(255)"
+//				+ ")"
+//				+ " ENGINE = MyISAM;"
+//				;
+//		
+//		String query4 = "create table if not exists Commande ("
+//				+ "id_commande int primary key,"
+//				+ "id_produit int,"
+////				+ "foreign key (id_produit) references Produit(id_produit),"
+//				+ "id_client int,"
+////				+ "foreign key (id_client) references Client(id_client),"
+//				+ "date_commande varchar(255)"
+//				+ ")"
+//				+ " ENGINE = MyISAM;"
+//				;
+//		try {
+//			PreparedStatement preparedStatement1 = (PreparedStatement) connection.prepareStatement(query1);
+//			preparedStatement1.execute();
+//			PreparedStatement preparedStatement2 = (PreparedStatement) connection.prepareStatement(query2);
+//			preparedStatement2.execute();
+//			PreparedStatement preparedStatement3 = (PreparedStatement) connection.prepareStatement(query3);
+//			preparedStatement3.execute();
+//			PreparedStatement preparedStatement4 = (PreparedStatement) connection.prepareStatement(query4);
+//			preparedStatement4.execute();
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//	}
+	
+	/******************************************************************************************/
+	/****************************************CheckIds******************************************/
+	/******************************************************************************************/
+	
+	public void CheckIds(){
+		try {
+			InputStream inputStream = new FileInputStream(filePath);
+			InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+			BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+			
+			String query = "";
+			while ((query = bufferedReader.readLine()) != null) {
+				String titlesVSdata[] = query.split(" values ");
+				String titles[] = titlesVSdata[0].split(" ");
+				String table = titles[2];
+				String data[] = titlesVSdata[1].split(",");
+				String id = data[0];
+				if (!(
+						((table.equals("Client"))&&(client_ids.contains(id)))
+							||
+						((table.equals("Fournisseur"))&&(fournisseur_ids.contains(id)))
+							||
+						((table.equals("Produit"))&&(produit_ids.contains(id)))
+							||
+						((table.equals("Commande"))&&(commande_ids.contains(id)))
+					 )
+				   ) {
+					if (table.equals("Client")) {
+						client_ids.add(id);						
+					}
+					else {
+						if (table.equals("Fournisseur")) {
+							fournisseur_ids.add(id);						
+						}
+						else{
+							if (table.equals("Produit")) {
+								produit_ids.add(id);						
+							}
+							else{
+								commande_ids.add(id);						
+							}
+						}
+					}
+				}
+				bufferedReader.readLine();
+				bufferedReader.readLine();
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+		
 	
 	/******************************************************************************************/
 	/****************************************Insertion*****************************************/
@@ -469,19 +587,6 @@ public void ReadSelectEtoile(String whereClause){
 
 	public void Update(String query){
 		System.out.println("Mise à jour dans la base de données MySQL");
-	
-		//Début du calcul du temps
-		long startTime = System.currentTimeMillis();
-		
-		try {
-			PreparedStatement preparedStaement = (PreparedStatement) connection.prepareStatement(query);
-			preparedStaement.execute();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		//Calcul du temps de traitement ici
-		long time = System.currentTimeMillis()-startTime;
 		
 		//Calcul du nombre de lignes mises à jour
 		int lignesMisesAjour = 0;	
@@ -497,6 +602,19 @@ public void ReadSelectEtoile(String whereClause){
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	
+		//Début du calcul du temps
+		long startTime = System.currentTimeMillis();
+		
+		try {
+			PreparedStatement preparedStaement = (PreparedStatement) connection.prepareStatement(query);
+			preparedStaement.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		//Calcul du temps de traitement ici
+		long time = System.currentTimeMillis()-startTime;
 	
 		writeResult("Mise à jour ", lignesMisesAjour , this.toString() , time + " ms"   );
 	}
